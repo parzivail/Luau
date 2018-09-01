@@ -246,32 +246,50 @@ namespace Luau
 
         private void tsbCut_Click(object sender, EventArgs e)
         {
-            textArea.Cut();
+            if (tbLog.Focused)
+                tbLog.Cut();
+            else
+                textArea.Cut();
         }
 
         private void tsbCopy_Click(object sender, EventArgs e)
         {
-            textArea.Copy();
+            if (tbLog.Focused)
+                tbLog.Copy();
+            else
+                textArea.Copy();
         }
 
         private void tsbPaste_Click(object sender, EventArgs e)
         {
-            textArea.Paste();
+            if (tbLog.Focused)
+                tbLog.Paste();
+            else
+                textArea.Paste();
         }
 
         private void tsbSelectAll_Click(object sender, EventArgs e)
         {
-            textArea.SelectAll();
+            if (tbLog.Focused)
+                tbLog.SelectAll();
+            else
+                textArea.SelectAll();
         }
 
         private void tsbRichCopy_Click(object sender, EventArgs e)
         {
-            textArea.Copy(CopyFormat.Rtf);
+            if (tbLog.Focused)
+                tbLog.Copy();
+            else
+                textArea.Copy(CopyFormat.Rtf);
         }
 
         private void tsbHtmlCopy_Click(object sender, EventArgs e)
         {
-            textArea.Copy(CopyFormat.Html);
+            if (tbLog.Focused)
+                tbLog.Copy();
+            else
+                textArea.Copy(CopyFormat.Html);
         }
 
         private void tsbGoToLine_Click(object sender, EventArgs e)

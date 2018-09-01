@@ -25,5 +25,17 @@ namespace Luau
             box.AppendText(text);
             box.SelectionColor = box.ForeColor;
         }
+
+        /// <summary>
+        /// Converts a DateTime to a unix timestamp
+        /// </summary>
+        /// <param name="date">The date to convert</param>
+        /// <returns>The unix timestamp</returns>
+        public static double ConvertToUnixTimestamp(this DateTime date)
+        {
+            var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var diff = date.ToUniversalTime() - origin;
+            return Math.Floor(diff.TotalSeconds);
+        }
     }
 }

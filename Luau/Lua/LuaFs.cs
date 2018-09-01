@@ -75,5 +75,47 @@ namespace Luau
         /// <param name="origPath">The original absolute filename of the file</param>
         /// <param name="newPath">The new absolute filename of the file</param>
         public void moveFile(string origPath, string newPath) => File.Move(origPath, newPath);
+
+        /// <summary>
+        /// Gets the extension of a file
+        /// </summary>
+        /// <param name="path">The filename to query</param>
+        /// <returns>The extension of the file</returns>
+        public string getExtension(string path) => Path.GetExtension(path);
+
+        /// <summary>
+        /// Gets the name of a file
+        /// </summary>
+        /// <param name="path">The filename to query</param>
+        /// <returns>The name of the file</returns>
+        public string getFileName(string path) => Path.GetFileName(path);
+
+        /// <summary>
+        /// Gets the name of a file without the extension
+        /// </summary>
+        /// <param name="path">The filename to query</param>
+        /// <returns>The name of the file without the extension</returns>
+        public string getFileNameWithoutExtension(string path) => Path.GetFileNameWithoutExtension(path);
+
+        /// <summary>
+        /// Gets the name of a directory
+        /// </summary>
+        /// <param name="path">The path to query</param>
+        /// <returns>The name of the directory</returns>
+        public string getDirName(string path) => Path.GetDirectoryName(path);
+
+        /// <summary>
+        /// Gets the creation timestamp of a file
+        /// </summary>
+        /// <param name="path">The filename to query</param>
+        /// <returns>The timestamp of the file</returns>
+        public double getCreationTime(string path) => File.GetCreationTime(path).ConvertToUnixTimestamp();
+
+        /// <summary>
+        /// Gets the modified timestamp of a file
+        /// </summary>
+        /// <param name="path">The filename to query</param>
+        /// <returns>The timestamp of the file</returns>
+        public double getModifiedTime(string path) => File.GetLastWriteTime(path).ConvertToUnixTimestamp();
     }
 }
