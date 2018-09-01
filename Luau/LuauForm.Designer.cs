@@ -48,23 +48,30 @@ namespace Luau
             this.tsbReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbGoToLine = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbRun = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbPreferences = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbRun = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.scintilla = new ScintillaNET.Scintilla();
-            this.log = new System.Windows.Forms.RichTextBox();
+            this.tabsOutput = new System.Windows.Forms.TabControl();
+            this.tabOutput = new System.Windows.Forms.TabPage();
+            this.log = new System.Windows.Forms.TextBox();
+            this.tabErrors = new System.Windows.Forms.TabPage();
+            this.logErr = new System.Windows.Forms.TextBox();
             this.logStatusStrip = new System.Windows.Forms.StatusStrip();
             this.statusRunTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsbHalt = new System.Windows.Forms.ToolStripDropDownButton();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.tsbHalt = new System.Windows.Forms.ToolStripDropDownButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabsOutput.SuspendLayout();
+            this.tabOutput.SuspendLayout();
+            this.tabErrors.SuspendLayout();
             this.logStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,10 +80,11 @@ namespace Luau
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbFile,
             this.tsbEdit,
-            this.tsbRun,
-            this.tsbHelp});
+            this.tsbHelp,
+            this.tsbRun});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ShowItemToolTips = true;
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
@@ -215,14 +223,6 @@ namespace Luau
             this.tsbGoToLine.Text = "Go To Line";
             this.tsbGoToLine.Click += new System.EventHandler(this.tsbGoToLine_Click);
             // 
-            // tsbRun
-            // 
-            this.tsbRun.Name = "tsbRun";
-            this.tsbRun.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.tsbRun.Size = new System.Drawing.Size(40, 20);
-            this.tsbRun.Text = "Run";
-            this.tsbRun.Click += new System.EventHandler(this.tsbRun_Click);
-            // 
             // tsbHelp
             // 
             this.tsbHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -246,6 +246,16 @@ namespace Luau
             this.tsbPreferences.Text = "Preferences";
             this.tsbPreferences.Click += new System.EventHandler(this.tsbPreferences_Click);
             // 
+            // tsbRun
+            // 
+            this.tsbRun.Image = global::Luau.Properties.Resources.control_play;
+            this.tsbRun.Name = "tsbRun";
+            this.tsbRun.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.tsbRun.Size = new System.Drawing.Size(56, 20);
+            this.tsbRun.Text = "Run";
+            this.tsbRun.ToolTipText = "Run Script (F5)";
+            this.tsbRun.Click += new System.EventHandler(this.tsbRun_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -258,7 +268,7 @@ namespace Luau
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.log);
+            this.splitContainer1.Panel2.Controls.Add(this.tabsOutput);
             this.splitContainer1.Panel2.Controls.Add(this.logStatusStrip);
             this.splitContainer1.Size = new System.Drawing.Size(984, 637);
             this.splitContainer1.SplitterDistance = 637;
@@ -281,17 +291,64 @@ namespace Luau
             this.scintilla.Technology = ScintillaNET.Technology.DirectWrite;
             this.scintilla.UseTabs = true;
             // 
+            // tabsOutput
+            // 
+            this.tabsOutput.Controls.Add(this.tabOutput);
+            this.tabsOutput.Controls.Add(this.tabErrors);
+            this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabsOutput.Location = new System.Drawing.Point(0, 0);
+            this.tabsOutput.Name = "tabsOutput";
+            this.tabsOutput.SelectedIndex = 0;
+            this.tabsOutput.Size = new System.Drawing.Size(343, 615);
+            this.tabsOutput.TabIndex = 3;
+            // 
+            // tabOutput
+            // 
+            this.tabOutput.Controls.Add(this.log);
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(335, 589);
+            this.tabOutput.TabIndex = 0;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
+            // 
             // log
             // 
             this.log.BackColor = System.Drawing.SystemColors.Window;
             this.log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.log.Location = new System.Drawing.Point(0, 0);
+            this.log.Location = new System.Drawing.Point(3, 3);
+            this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
-            this.log.Size = new System.Drawing.Size(343, 615);
-            this.log.TabIndex = 1;
-            this.log.Text = "";
+            this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.log.Size = new System.Drawing.Size(329, 583);
+            this.log.TabIndex = 0;
             this.log.WordWrap = false;
+            // 
+            // tabErrors
+            // 
+            this.tabErrors.Controls.Add(this.logErr);
+            this.tabErrors.Location = new System.Drawing.Point(4, 22);
+            this.tabErrors.Name = "tabErrors";
+            this.tabErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabErrors.Size = new System.Drawing.Size(335, 589);
+            this.tabErrors.TabIndex = 1;
+            this.tabErrors.Text = "Errors";
+            this.tabErrors.UseVisualStyleBackColor = true;
+            // 
+            // logErr
+            // 
+            this.logErr.BackColor = System.Drawing.SystemColors.Window;
+            this.logErr.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logErr.Location = new System.Drawing.Point(3, 3);
+            this.logErr.Multiline = true;
+            this.logErr.Name = "logErr";
+            this.logErr.ReadOnly = true;
+            this.logErr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.logErr.Size = new System.Drawing.Size(329, 583);
+            this.logErr.TabIndex = 1;
+            this.logErr.WordWrap = false;
             // 
             // logStatusStrip
             // 
@@ -300,6 +357,7 @@ namespace Luau
             this.tsbHalt});
             this.logStatusStrip.Location = new System.Drawing.Point(0, 615);
             this.logStatusStrip.Name = "logStatusStrip";
+            this.logStatusStrip.ShowItemToolTips = true;
             this.logStatusStrip.Size = new System.Drawing.Size(343, 22);
             this.logStatusStrip.TabIndex = 2;
             // 
@@ -309,6 +367,18 @@ namespace Luau
             this.statusRunTime.Size = new System.Drawing.Size(39, 17);
             this.statusRunTime.Text = "Ready";
             // 
+            // tsbHalt
+            // 
+            this.tsbHalt.Enabled = false;
+            this.tsbHalt.Image = global::Luau.Properties.Resources.cross;
+            this.tsbHalt.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHalt.Name = "tsbHalt";
+            this.tsbHalt.ShowDropDownArrow = false;
+            this.tsbHalt.Size = new System.Drawing.Size(49, 20);
+            this.tsbHalt.Text = "Halt";
+            this.tsbHalt.ToolTipText = "Forcibly halt script execution";
+            this.tsbHalt.Click += new System.EventHandler(this.tsbHalt_Click);
+            // 
             // sfd
             // 
             this.sfd.Filter = "Lua files|*.lua|All Files|*.*";
@@ -316,15 +386,6 @@ namespace Luau
             // ofd
             // 
             this.ofd.Filter = "Lua files|*.lua|All Files|*.*";
-            // 
-            // tsbHalt
-            // 
-            this.tsbHalt.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbHalt.Name = "tsbHalt";
-            this.tsbHalt.ShowDropDownArrow = false;
-            this.tsbHalt.Size = new System.Drawing.Size(33, 20);
-            this.tsbHalt.Text = "Halt";
-            this.tsbHalt.Click += new System.EventHandler(this.tsbHalt_Click);
             // 
             // LuauForm
             // 
@@ -346,6 +407,11 @@ namespace Luau
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabsOutput.ResumeLayout(false);
+            this.tabOutput.ResumeLayout(false);
+            this.tabOutput.PerformLayout();
+            this.tabErrors.ResumeLayout(false);
+            this.tabErrors.PerformLayout();
             this.logStatusStrip.ResumeLayout(false);
             this.logStatusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -359,7 +425,6 @@ namespace Luau
         private System.Windows.Forms.SplitContainer splitContainer1;
         private ScintillaNET.Scintilla scintilla;
         private System.Windows.Forms.ToolStripMenuItem tsbRun;
-        private System.Windows.Forms.RichTextBox log;
         private System.Windows.Forms.ToolStripMenuItem tsbEdit;
         private System.Windows.Forms.ToolStripMenuItem tsbFind;
         private System.Windows.Forms.ToolStripMenuItem tsbReplace;
@@ -383,6 +448,11 @@ namespace Luau
         private StatusStrip logStatusStrip;
         private ToolStripStatusLabel statusRunTime;
         private ToolStripDropDownButton tsbHalt;
+        private TabControl tabsOutput;
+        private TabPage tabOutput;
+        private TabPage tabErrors;
+        private TextBox log;
+        private TextBox logErr;
     }
 }
 

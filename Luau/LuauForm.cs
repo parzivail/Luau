@@ -57,10 +57,13 @@ namespace Luau
 
         private void LoadLogStyles()
         {
-            log.Clear();
-
             log.BackColor = Settings.Default.StyleEditorBackground;
+            log.ForeColor = Settings.Default.StyleLuaDefault;
             log.Font = new Font(scintilla.Styles[Style.Default].Font, scintilla.Styles[Style.Default].Size);
+
+            logErr.BackColor = Settings.Default.StyleEditorBackground;
+            logErr.ForeColor = Settings.Default.StyleLuaDefault;
+            logErr.Font = new Font(scintilla.Styles[Style.Default].Font, scintilla.Styles[Style.Default].Size);
         }
 
         private void LoadEditorStyles()
@@ -146,12 +149,14 @@ namespace Luau
 
         private void Print(string msg)
         {
-            log.AppendText($"{msg}{Environment.NewLine}", Settings.Default.StyleLuaDefault);
+            tabsOutput.SelectedTab = tabOutput;
+            log.AppendText($"{msg}{Environment.NewLine}");
         }
 
         private void Critical(string msg)
         {
-            log.AppendText($"{msg}{Environment.NewLine}", Settings.Default.StyleLuaComment);
+            tabsOutput.SelectedTab = tabErrors;
+            logErr.AppendText($"{msg}{Environment.NewLine}");
         }
 
         private void InterpreterOnPrint(object sender, string s)
@@ -180,9 +185,7 @@ namespace Luau
             void MethodInvokerDelegate()
             {
                 if (exception is ThreadAbortException)
-                {
                     Critical($">>> {Resources.LogScriptHalted}");
-                }
                 else
                 {
                     Critical($">>> {Resources.LogError}:");
@@ -207,7 +210,7 @@ namespace Luau
             _stopwatch.Restart();
         }
 
-        private void InterpreterOnExecutionComplete(object sender, EventArgs eventArgs)
+        private void InterpreterOnExecutionComplete(object sender, ExitCondition exitCondition)
         {
             void MethodInvokerDelegate()
             {

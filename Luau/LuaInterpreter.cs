@@ -11,7 +11,7 @@ namespace Luau
     {
         public event EventHandler<string> Print;
         public event EventHandler<EventArgs> ExecutionStart;
-        public event EventHandler<EventArgs> ExecutionComplete;
+        public event EventHandler<ExitCondition> ExecutionComplete;
         public event EventHandler<InterpreterException> LuaError;
         public event EventHandler<Exception> CsError;
 
@@ -42,32 +42,39 @@ namespace Luau
             _script.Globals["sleep"] = (Action<int>)Thread.Sleep;
         }
 
+        private void RunScript(string script)
+        {
+            try
+            {
+                ExecutionStart?.Invoke(this, EventArgs.Empty);
+                lock (_script)
+                {
+                    _script.DoString(script, codeFriendlyName: "script");
+                }
+                ExecutionComplete?.Invoke(this, ExitCondition.ProgramEnd);
+            }
+            catch (InterpreterException e)
+            {
+                LuaError?.Invoke(this, e);
+                ExecutionComplete?.Invoke(this, ExitCondition.ScriptError);
+            }
+            catch (Exception e)
+            {
+                CsError?.Invoke(this, e);
+                ExecutionComplete?.Invoke(this, ExitCondition.CsError);
+            }
+        }
+
         public void Run(string script)
         {
-            _luaExecThread = new Thread(() =>
-            {
-                try
-                {
-                    ExecutionStart?.Invoke(this, EventArgs.Empty);
-                    _script.DoString(script, codeFriendlyName: "script");
-                    ExecutionComplete?.Invoke(this, EventArgs.Empty);
-                }
-                catch (InterpreterException e)
-                {
-                    LuaError?.Invoke(this, e);
-                }
-                catch (Exception e)
-                {
-                    CsError?.Invoke(this, e);
-                }
-            });
+            _luaExecThread = new Thread(() => RunScript(script));
             _luaExecThread.Start();
         }
 
         public void Halt()
         {
             _luaExecThread?.Abort();
-            ExecutionComplete?.Invoke(this, EventArgs.Empty);
+            ExecutionComplete?.Invoke(this, ExitCondition.ForceHalt);
         }
     }
 }
