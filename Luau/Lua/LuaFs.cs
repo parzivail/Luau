@@ -5,13 +5,19 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Luau.Lua;
 using MoonSharp.Interpreter;
 
 namespace Luau
 {
     [MoonSharpUserData]
-    internal class LuaFs
+    internal class LuaFs : ILuaAddon
     {
+        public string GetAddonName()
+        {
+            return "fs";
+        }
+
         /// <summary>
         /// Determines the existence of a directory
         /// </summary>

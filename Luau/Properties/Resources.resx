@@ -124,16 +124,13 @@
     <value>Running script</value>
   </data>
   <data name="LogExitedAfter" xml:space="preserve">
-    <value>Exited after</value>
+    <value>Exited after {0}</value>
   </data>
   <data name="LuauTItle" xml:space="preserve">
     <value>Luau - {0}{1}</value>
   </data>
   <data name="FileUntitled" xml:space="preserve">
     <value>untitled</value>
-  </data>
-  <data name="LogOutput" xml:space="preserve">
-    <value>Output Log</value>
   </data>
   <data name="WarningUnsavedChanges" xml:space="preserve">
     <value>You have unsaved changes. Save before closing?</value>

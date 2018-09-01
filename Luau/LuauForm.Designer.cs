@@ -39,12 +39,8 @@ namespace Luau
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbRichCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbHtmlCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbFind = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbFindNext = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,9 +51,12 @@ namespace Luau
             this.tsbRun = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbPreferences = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textArea = new ScintillaNET.Scintilla();
-            this.tbLog = new System.Windows.Forms.RichTextBox();
+            this.scintilla = new ScintillaNET.Scintilla();
+            this.log = new System.Windows.Forms.RichTextBox();
+            this.logStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusRunTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
@@ -65,6 +64,7 @@ namespace Luau
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.logStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -133,12 +133,8 @@ namespace Luau
             // tsbEdit
             // 
             this.tsbEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbCut,
-            this.tsbCopy,
             this.tsbRichCopy,
             this.tsbHtmlCopy,
-            this.tsbPaste,
-            this.tsbSelectAll,
             this.toolStripSeparator1,
             this.tsbFind,
             this.tsbFindNext,
@@ -149,22 +145,6 @@ namespace Luau
             this.tsbEdit.Name = "tsbEdit";
             this.tsbEdit.Size = new System.Drawing.Size(39, 20);
             this.tsbEdit.Text = "Edit";
-            // 
-            // tsbCut
-            // 
-            this.tsbCut.Name = "tsbCut";
-            this.tsbCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.tsbCut.Size = new System.Drawing.Size(203, 22);
-            this.tsbCut.Text = "Cut";
-            this.tsbCut.Click += new System.EventHandler(this.tsbCut_Click);
-            // 
-            // tsbCopy
-            // 
-            this.tsbCopy.Name = "tsbCopy";
-            this.tsbCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsbCopy.Size = new System.Drawing.Size(203, 22);
-            this.tsbCopy.Text = "Copy";
-            this.tsbCopy.Click += new System.EventHandler(this.tsbCopy_Click);
             // 
             // tsbRichCopy
             // 
@@ -183,22 +163,6 @@ namespace Luau
             this.tsbHtmlCopy.Size = new System.Drawing.Size(203, 22);
             this.tsbHtmlCopy.Text = "Copy HTML";
             this.tsbHtmlCopy.Click += new System.EventHandler(this.tsbHtmlCopy_Click);
-            // 
-            // tsbPaste
-            // 
-            this.tsbPaste.Name = "tsbPaste";
-            this.tsbPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.tsbPaste.Size = new System.Drawing.Size(203, 22);
-            this.tsbPaste.Text = "Paste";
-            this.tsbPaste.Click += new System.EventHandler(this.tsbPaste_Click);
-            // 
-            // tsbSelectAll
-            // 
-            this.tsbSelectAll.Name = "tsbSelectAll";
-            this.tsbSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.tsbSelectAll.Size = new System.Drawing.Size(203, 22);
-            this.tsbSelectAll.Text = "Select All";
-            this.tsbSelectAll.Click += new System.EventHandler(this.tsbSelectAll_Click);
             // 
             // toolStripSeparator1
             // 
@@ -261,7 +225,8 @@ namespace Luau
             // tsbHelp
             // 
             this.tsbHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbAbout});
+            this.tsbAbout,
+            this.tsbPreferences});
             this.tsbHelp.Name = "tsbHelp";
             this.tsbHelp.Size = new System.Drawing.Size(24, 20);
             this.tsbHelp.Text = "?";
@@ -273,6 +238,13 @@ namespace Luau
             this.tsbAbout.Text = "About";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
+            // tsbPreferences
+            // 
+            this.tsbPreferences.Name = "tsbPreferences";
+            this.tsbPreferences.Size = new System.Drawing.Size(180, 22);
+            this.tsbPreferences.Text = "Preferences";
+            this.tsbPreferences.Click += new System.EventHandler(this.tsbPreferences_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -281,41 +253,59 @@ namespace Luau
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.textArea);
+            this.splitContainer1.Panel1.Controls.Add(this.scintilla);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tbLog);
+            this.splitContainer1.Panel2.Controls.Add(this.log);
+            this.splitContainer1.Panel2.Controls.Add(this.logStatusStrip);
             this.splitContainer1.Size = new System.Drawing.Size(984, 637);
             this.splitContainer1.SplitterDistance = 637;
             this.splitContainer1.TabIndex = 2;
             // 
-            // textArea
+            // scintilla
             // 
-            this.textArea.AdditionalSelectionTyping = true;
-            this.textArea.AutomaticFold = ((ScintillaNET.AutomaticFold)(((ScintillaNET.AutomaticFold.Show | ScintillaNET.AutomaticFold.Click) 
+            this.scintilla.AdditionalSelectionTyping = true;
+            this.scintilla.AutomaticFold = ((ScintillaNET.AutomaticFold)(((ScintillaNET.AutomaticFold.Show | ScintillaNET.AutomaticFold.Click) 
             | ScintillaNET.AutomaticFold.Change)));
-            this.textArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textArea.IndentationGuides = ScintillaNET.IndentView.Real;
-            this.textArea.Lexer = ScintillaNET.Lexer.Lua;
-            this.textArea.Location = new System.Drawing.Point(0, 0);
-            this.textArea.MouseSelectionRectangularSwitch = true;
-            this.textArea.MultipleSelection = true;
-            this.textArea.Name = "textArea";
-            this.textArea.Size = new System.Drawing.Size(637, 637);
-            this.textArea.TabIndex = 1;
-            this.textArea.UseTabs = true;
+            this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scintilla.IndentationGuides = ScintillaNET.IndentView.Real;
+            this.scintilla.Lexer = ScintillaNET.Lexer.Lua;
+            this.scintilla.Location = new System.Drawing.Point(0, 0);
+            this.scintilla.MouseSelectionRectangularSwitch = true;
+            this.scintilla.MultipleSelection = true;
+            this.scintilla.Name = "scintilla";
+            this.scintilla.Size = new System.Drawing.Size(637, 637);
+            this.scintilla.TabIndex = 1;
+            this.scintilla.Technology = ScintillaNET.Technology.DirectWrite;
+            this.scintilla.UseTabs = true;
             // 
-            // tbLog
+            // log
             // 
-            this.tbLog.BackColor = System.Drawing.SystemColors.Window;
-            this.tbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbLog.Location = new System.Drawing.Point(0, 0);
-            this.tbLog.Name = "tbLog";
-            this.tbLog.ReadOnly = true;
-            this.tbLog.Size = new System.Drawing.Size(343, 637);
-            this.tbLog.TabIndex = 1;
-            this.tbLog.Text = "";
+            this.log.BackColor = System.Drawing.SystemColors.Window;
+            this.log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.log.Location = new System.Drawing.Point(0, 0);
+            this.log.Name = "log";
+            this.log.ReadOnly = true;
+            this.log.Size = new System.Drawing.Size(343, 615);
+            this.log.TabIndex = 1;
+            this.log.Text = "";
+            this.log.WordWrap = false;
+            // 
+            // logStatusStrip
+            // 
+            this.logStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusRunTime});
+            this.logStatusStrip.Location = new System.Drawing.Point(0, 615);
+            this.logStatusStrip.Name = "logStatusStrip";
+            this.logStatusStrip.Size = new System.Drawing.Size(343, 22);
+            this.logStatusStrip.TabIndex = 2;
+            // 
+            // statusRunTime
+            // 
+            this.statusRunTime.Name = "statusRunTime";
+            this.statusRunTime.Size = new System.Drawing.Size(39, 17);
+            this.statusRunTime.Text = "Ready";
             // 
             // sfd
             // 
@@ -342,8 +332,11 @@ namespace Luau
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.logStatusStrip.ResumeLayout(false);
+            this.logStatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,19 +346,15 @@ namespace Luau
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsbFile;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private ScintillaNET.Scintilla textArea;
+        private ScintillaNET.Scintilla scintilla;
         private System.Windows.Forms.ToolStripMenuItem tsbRun;
-        private System.Windows.Forms.RichTextBox tbLog;
+        private System.Windows.Forms.RichTextBox log;
         private System.Windows.Forms.ToolStripMenuItem tsbEdit;
         private System.Windows.Forms.ToolStripMenuItem tsbFind;
         private System.Windows.Forms.ToolStripMenuItem tsbReplace;
         private System.Windows.Forms.ToolStripMenuItem tsbOpen;
         private System.Windows.Forms.ToolStripMenuItem tsbSave;
         private System.Windows.Forms.ToolStripMenuItem tsbSaveAs;
-        private System.Windows.Forms.ToolStripMenuItem tsbCut;
-        private System.Windows.Forms.ToolStripMenuItem tsbCopy;
-        private System.Windows.Forms.ToolStripMenuItem tsbPaste;
-        private System.Windows.Forms.ToolStripMenuItem tsbSelectAll;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tsbRichCopy;
         private System.Windows.Forms.ToolStripMenuItem tsbHtmlCopy;
@@ -379,6 +368,9 @@ namespace Luau
         private OpenFileDialog ofd;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem tsbClose;
+        private ToolStripMenuItem tsbPreferences;
+        private StatusStrip logStatusStrip;
+        private ToolStripStatusLabel statusRunTime;
     }
 }
 

@@ -9,8 +9,13 @@ using MoonSharp.Interpreter;
 namespace Luau.Lua
 {
     [MoonSharpUserData]
-    internal class LuaWeb
+    internal class LuaWeb : ILuaAddon
     {
+        public string GetAddonName()
+        {
+            return "web";
+        }
+
         /// <summary>
         /// Downloads a string from a web remote
         /// </summary>

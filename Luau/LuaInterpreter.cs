@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Forms;
 using Luau.Lua;
 using MoonSharp.Interpreter;
 
@@ -12,6 +14,11 @@ namespace Luau
         public event EventHandler<Exception> CsError;
 
         private readonly Script _script;
+        private readonly List<ILuaAddon> _addons = new List<ILuaAddon>
+        {
+            new LuaFs(),
+            new LuaWeb()
+        };
 
         public LuaInterpreter()
         {
@@ -25,10 +32,21 @@ namespace Luau
                 }
             };
 
-            _script.Globals["fs"] = new LuaFs();
-            _script.Globals["web"] = new LuaWeb();
+            foreach (var addon in _addons)
+                _script.Globals[addon.GetAddonName()] = addon;
 
-            _script.Globals["sleep"] = (Action<int>) Thread.Sleep;
+            _script.Globals["sleep"] = (Action<int>)Sleep;
+        }
+
+        private static void Sleep(int millis)
+        {
+            var end = DateTime.Now.AddMilliseconds(millis);
+            var i = 0;
+            while (DateTime.Now < end)
+            {
+                if (i++ % 20 == 0)
+                    Application.DoEvents();
+            }
         }
 
         public bool Run(string script)

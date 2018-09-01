@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Luau.Properties;
 using MoonSharp.Interpreter;
@@ -36,68 +30,73 @@ namespace Luau
             _interpreter.LuaError += InterpreterOnLuaError;
             _interpreter.CsError += InterpreterOnCsError;
 
-            LoadEditorStyles(textArea);
-            LoadLogStyles(textArea, tbLog);
+            ReloadStyles();
 
-            textArea.SavePointLeft += TextArea_SavePointLeft;
-            textArea.SavePointReached += TextArea_SavePointReached;
+            scintilla.SavePointLeft += TextArea_SavePointLeft;
+            scintilla.SavePointReached += TextArea_SavePointReached;
 
-            _findReplace = new FindReplace(textArea);
-
-            Info($">>> {Resources.LogOutput}");
+            _findReplace = new FindReplace(scintilla);
         }
 
         private void LuauForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!TryCloseFile())
                 e.Cancel = true;
+
+            // Awful hack to make sure the copied text persists when the window closes
+            if (Clipboard.ContainsText())
+                Clipboard.SetDataObject(Clipboard.GetText(), true);
         }
 
-        private static void LoadLogStyles(Scintilla scintilla, Control log)
+        private void LoadLogStyles()
         {
+            log.Clear();
+
+            log.BackColor = Settings.Default.StyleEditorBackground;
             log.Font = new Font(scintilla.Styles[Style.Default].Font, scintilla.Styles[Style.Default].Size);
         }
 
-        private static void LoadEditorStyles(Scintilla scintilla)
+        private void LoadEditorStyles()
         {
-            var alphaChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var numericChars = "0123456789";
-            var accentedChars = "ŠšŒœŸÿÀàÁáÂâÃãÄäÅåÆæÇçÈèÉéÊêËëÌìÍíÎîÏïÐðÑñÒòÓóÔôÕõÖØøÙùÚúÛûÜüÝýÞþßö";
+            const string alphaChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string numericChars = "0123456789";
+            const string accentedChars = "ŠšŒœŸÿÀàÁáÂâÃãÄäÅåÆæÇçÈèÉéÊêËëÌìÍíÎîÏïÐðÑñÒòÓóÔôÕõÖØøÙùÚúÛûÜüÝýÞþßö";
 
             // Configuring the default style with properties
             // we have common to every lexer style saves time.
             scintilla.StyleResetDefault();
-            scintilla.Styles[Style.Default].Font = "Consolas";
-            scintilla.Styles[Style.Default].Size = 10;
+            scintilla.Styles[Style.Default].Font = Settings.Default.EditorFont;
+            scintilla.Styles[Style.Default].Size = Settings.Default.EditorFontSize;
+            scintilla.Styles[Style.Default].BackColor = Settings.Default.StyleEditorBackground;
             scintilla.StyleClearAll();
 
             // Configure the Lua lexer styles
-            scintilla.Styles[Style.Lua.Default].ForeColor = Color.Silver;
-            scintilla.Styles[Style.Lua.Comment].ForeColor = Color.Green;
-            scintilla.Styles[Style.Lua.CommentLine].ForeColor = Color.Green;
-            scintilla.Styles[Style.Lua.Number].ForeColor = Color.Olive;
-            scintilla.Styles[Style.Lua.Word].ForeColor = Color.Blue;
-            scintilla.Styles[Style.Lua.Word2].ForeColor = Color.DodgerBlue;
-            scintilla.Styles[Style.Lua.Word3].ForeColor = Color.DarkSlateBlue;
-            scintilla.Styles[Style.Lua.Word4].ForeColor = Color.DarkSlateBlue;
-            scintilla.Styles[Style.Lua.String].ForeColor = Color.Red;
-            scintilla.Styles[Style.Lua.Character].ForeColor = Color.Red;
-            scintilla.Styles[Style.Lua.LiteralString].ForeColor = Color.Red;
-            scintilla.Styles[Style.Lua.StringEol].BackColor = Color.Pink;
-            scintilla.Styles[Style.Lua.Operator].ForeColor = Color.Purple;
-            scintilla.Styles[Style.Lua.Preprocessor].ForeColor = Color.Maroon;
-            scintilla.WordChars = alphaChars + numericChars + accentedChars;
+            scintilla.Styles[Style.Lua.Default].ForeColor = Settings.Default.StyleLuaDefault;
 
-            // Console.WriteLine(scintilla.DescribeKeywordSets());
+            scintilla.Styles[Style.Lua.Comment].ForeColor = Settings.Default.StyleLuaComment;
+            scintilla.Styles[Style.Lua.CommentLine].ForeColor = Settings.Default.StyleLuaCommentLine;
+
+            scintilla.Styles[Style.Lua.Number].ForeColor = Settings.Default.StyleLuaNumber;
+            scintilla.Styles[Style.Lua.Operator].ForeColor = Settings.Default.StyleLuaOperator;
+
+            scintilla.Styles[Style.Lua.Word].ForeColor = Settings.Default.StyleLuaWord;
+            scintilla.Styles[Style.Lua.Word2].ForeColor = Settings.Default.StyleLuaWord2;
+            scintilla.Styles[Style.Lua.Word3].ForeColor = Settings.Default.StyleLuaWord3;
+
+            scintilla.Styles[Style.Lua.String].ForeColor = Settings.Default.StyleLuaString;
+            scintilla.Styles[Style.Lua.Character].ForeColor = Settings.Default.StyleLuaCharacter;
+            scintilla.Styles[Style.Lua.LiteralString].ForeColor = Settings.Default.StyleLuaLiteralString;
+
+            scintilla.Styles[Style.Lua.Preprocessor].ForeColor = Settings.Default.StyleLuaPreprocessor;
+
+            scintilla.WordChars = alphaChars + numericChars + accentedChars;
 
             // Keywords
             scintilla.SetKeywords(0, "and break do else elseif end for function if in local nil not or repeat return then until while false true goto");
             // Basic Functions
-            scintilla.SetKeywords(1, "assert collectgarbage dofile error _G getmetatable ipairs loadfile next pairs pcall print rawequal rawget rawset setmetatable tonumber tostring type _VERSION xpcall string table math coroutine io os debug getfenv gcinfo load loadlib loadstring require select setfenv unpack _LOADED LUA_PATH _REQUIREDNAME package rawlen package bit32 utf8 _ENV");
+            scintilla.SetKeywords(1, "require assert collectgarbage dofile error _G getmetatable ipairs loadfile next pairs pcall print rawequal rawget rawset setmetatable tonumber tostring type _VERSION xpcall string table math coroutine io os debug getfenv gcinfo load loadlib loadstring require select setfenv unpack _LOADED LUA_PATH _REQUIREDNAME package rawlen package bit32 utf8 _ENV");
             // String Manipulation & Mathematical
             scintilla.SetKeywords(2, "string.byte string.char string.dump string.find string.format string.gsub string.len string.lower string.rep string.sub string.upper table.concat table.insert table.remove table.sort math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos math.deg math.exp math.floor math.frexp math.ldexp math.log math.max math.min math.pi math.pow math.rad math.random math.randomseed math.sin math.sqrt math.tan string.gfind string.gmatch string.match string.reverse string.pack string.packsize string.unpack table.foreach table.foreachi table.getn table.setn table.maxn table.pack table.unpack table.move math.cosh math.fmod math.huge math.log10 math.modf math.mod math.sinh math.tanh math.maxinteger math.mininteger math.tointeger math.type math.ult bit32.arshift bit32.band bit32.bnot bit32.bor bit32.btest bit32.bxor bit32.extract bit32.replace bit32.lrotate bit32.lshift bit32.rrotate bit32.rshift utf8.char utf8.charpattern utf8.codes utf8.codepoint utf8.len utf8.offset");
-            // Input and Output Facilities and System Facilities
-            scintilla.SetKeywords(3, "coroutine.create coroutine.resume coroutine.status coroutine.wrap coroutine.yield io.close io.flush io.input io.lines io.open io.output io.read io.tmpfile io.type io.write io.stdin io.stdout io.stderr os.clock os.date os.difftime os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname coroutine.isyieldable coroutine.running io.popen module package.loaders package.seeall package.config package.searchers package.searchpath require package.cpath package.loaded package.loadlib package.path package.preload");
 
             // Instruct the lexer to calculate folding
             scintilla.SetProperty("fold", "1");
@@ -113,7 +112,7 @@ namespace Luau
             scintilla.Margins[2].Type = MarginType.Symbol;
             scintilla.Margins[2].Mask = Marker.MaskFolders;
             scintilla.Margins[2].Sensitive = true;
-            scintilla.Margins[2].Width = 20;
+            scintilla.Margins[2].Width = 15;
 
             // Set colors for all folding markers
             for (var i = 25; i <= 31; i++)
@@ -132,24 +131,25 @@ namespace Luau
             scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
         }
 
-        private void Log(string log)
+        private void ReloadStyles()
         {
-            tbLog.AppendText($"{log}{Environment.NewLine}", Color.Black);
+            LoadEditorStyles();
+            LoadLogStyles();
         }
 
-        private void Info(string log)
+        private void Print(string msg)
         {
-            tbLog.AppendText($"{log}{Environment.NewLine}", Color.LightGray);
+            log.AppendText($"{msg}{Environment.NewLine}", Settings.Default.StyleLuaDefault);
         }
 
-        private void Critical(string log)
+        private void Critical(string msg)
         {
-            tbLog.AppendText($"{log}{Environment.NewLine}", Color.Red);
+            log.AppendText($"{msg}{Environment.NewLine}", Settings.Default.StyleLuaComment);
         }
 
         private void InterpreterOnPrint(object sender, string s)
         {
-            Log(s);
+            Print(s);
         }
 
         private void InterpreterOnLuaError(object sender, InterpreterException exception)
@@ -191,18 +191,18 @@ namespace Luau
                 _savedFileName = sfd.FileName;
             }
 
-            File.WriteAllText(_savedFileName, textArea.Text);
+            File.WriteAllText(_savedFileName, scintilla.Text);
             SetTitle(_savedFileName, false);
-            textArea.SetSavePoint();
+            scintilla.SetSavePoint();
             return true;
         }
 
         private void CreateUntitledFile()
         {
             _savedFileName = null;
-            textArea.ClearAll();
+            scintilla.ClearAll();
             SetTitle(Resources.FileUntitled, false);
-            textArea.SetSavePoint();
+            scintilla.SetSavePoint();
         }
 
         private bool TryCloseFile()
@@ -223,15 +223,15 @@ namespace Luau
 
         private void tsbRun_Click(object sender, EventArgs e)
         {
-            tbLog.Clear();
-            Info($">>> {Resources.LogRunningScript}");
+            log.Clear();
+            statusRunTime.Text = Resources.LogRunningScript;
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            _interpreter.Run(textArea.Text);
+            _interpreter.Run(scintilla.Text);
 
             stopwatch.Stop();
-            Info($"<<< {Resources.LogExitedAfter} {stopwatch.Elapsed}");
+            statusRunTime.Text = string.Format(Resources.LogExitedAfter, stopwatch.Elapsed);
         }
 
         private void tsbFind_Click(object sender, EventArgs e)
@@ -244,57 +244,21 @@ namespace Luau
             _findReplace.ShowReplace();
         }
 
-        private void tsbCut_Click(object sender, EventArgs e)
-        {
-            if (tbLog.Focused)
-                tbLog.Cut();
-            else
-                textArea.Cut();
-        }
-
-        private void tsbCopy_Click(object sender, EventArgs e)
-        {
-            if (tbLog.Focused)
-                tbLog.Copy();
-            else
-                textArea.Copy();
-        }
-
-        private void tsbPaste_Click(object sender, EventArgs e)
-        {
-            if (tbLog.Focused)
-                tbLog.Paste();
-            else
-                textArea.Paste();
-        }
-
-        private void tsbSelectAll_Click(object sender, EventArgs e)
-        {
-            if (tbLog.Focused)
-                tbLog.SelectAll();
-            else
-                textArea.SelectAll();
-        }
-
         private void tsbRichCopy_Click(object sender, EventArgs e)
         {
-            if (tbLog.Focused)
-                tbLog.Copy();
-            else
-                textArea.Copy(CopyFormat.Rtf);
+            if (scintilla.Focused)
+                scintilla.Copy(CopyFormat.Rtf);
         }
 
         private void tsbHtmlCopy_Click(object sender, EventArgs e)
         {
-            if (tbLog.Focused)
-                tbLog.Copy();
-            else
-                textArea.Copy(CopyFormat.Html);
+            if (scintilla.Focused)
+                scintilla.Copy(CopyFormat.Html);
         }
 
         private void tsbGoToLine_Click(object sender, EventArgs e)
         {
-            new GoTo(textArea).ShowGoToDialog();
+            new GoTo(scintilla).ShowGoToDialog();
         }
 
         private void tsbFindNext_Click(object sender, EventArgs e)
@@ -313,9 +277,9 @@ namespace Luau
                 return;
 
             _savedFileName = ofd.FileName;
-            textArea.Text = File.ReadAllText(ofd.FileName);
+            scintilla.Text = File.ReadAllText(ofd.FileName);
             SetTitle(_savedFileName, false);
-            textArea.SetSavePoint();
+            scintilla.SetSavePoint();
         }
 
         private void tsbSave_Click(object sender, EventArgs e)
@@ -337,6 +301,13 @@ namespace Luau
         private void tsbAbout_Click(object sender, EventArgs e)
         {
             new LuauAboutBox().ShowDialog(this);
+        }
+
+        private void tsbPreferences_Click(object sender, EventArgs e)
+        {
+            var prefForm = new PreferencesForm();
+            prefForm.ShowDialog(this);
+            ReloadStyles();
         }
     }
 }

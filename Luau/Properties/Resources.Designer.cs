@@ -79,20 +79,11 @@ namespace Luau.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exited after.
+        ///   Looks up a localized string similar to Exited after {0}.
         /// </summary>
         internal static string LogExitedAfter {
             get {
                 return ResourceManager.GetString("LogExitedAfter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Output Log.
-        /// </summary>
-        internal static string LogOutput {
-            get {
-                return ResourceManager.GetString("LogOutput", resourceCulture);
             }
         }
         

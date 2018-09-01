@@ -8,22 +8,198 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Luau.Properties
-{
-
-
+namespace Luau.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Consolas")]
+        public string EditorFont {
+            get {
+                return ((string)(this["EditorFont"]));
+            }
+            set {
+                this["EditorFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("11")]
+        public int EditorFontSize {
+            get {
+                return ((int)(this["EditorFontSize"]));
+            }
+            set {
+                this["EditorFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color StyleLuaDefault {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaDefault"]));
+            }
+            set {
+                this["StyleLuaDefault"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color StyleLuaComment {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaComment"]));
+            }
+            set {
+                this["StyleLuaComment"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color StyleLuaCommentLine {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaCommentLine"]));
+            }
+            set {
+                this["StyleLuaCommentLine"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color StyleLuaNumber {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaNumber"]));
+            }
+            set {
+                this["StyleLuaNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color StyleLuaOperator {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaOperator"]));
+            }
+            set {
+                this["StyleLuaOperator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color StyleLuaWord {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaWord"]));
+            }
+            set {
+                this["StyleLuaWord"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color StyleLuaWord2 {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaWord2"]));
+            }
+            set {
+                this["StyleLuaWord2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color StyleLuaWord3 {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaWord3"]));
+            }
+            set {
+                this["StyleLuaWord3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color StyleLuaString {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaString"]));
+            }
+            set {
+                this["StyleLuaString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color StyleLuaCharacter {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaCharacter"]));
+            }
+            set {
+                this["StyleLuaCharacter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color StyleLuaLiteralString {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaLiteralString"]));
+            }
+            set {
+                this["StyleLuaLiteralString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Gray")]
+        public global::System.Drawing.Color StyleLuaPreprocessor {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleLuaPreprocessor"]));
+            }
+            set {
+                this["StyleLuaPreprocessor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color StyleEditorBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["StyleEditorBackground"]));
+            }
+            set {
+                this["StyleEditorBackground"] = value;
             }
         }
     }

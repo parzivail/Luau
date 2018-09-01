@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Luau")]
 [assembly: AssemblyDescription("The Luau desktop scripting scratchpad")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Colby \"parzivail\" Newman")]
+[assembly: AssemblyCompany("parzivail")]
 [assembly: AssemblyProduct("Luau")]
 [assembly: AssemblyCopyright("GNU LGPLv3")]
 [assembly: AssemblyTrademark("")]
