@@ -59,6 +59,7 @@ namespace Luau
             this.statusRunTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.tsbHalt = new System.Windows.Forms.ToolStripDropDownButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -234,14 +235,14 @@ namespace Luau
             // tsbAbout
             // 
             this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(180, 22);
+            this.tsbAbout.Size = new System.Drawing.Size(135, 22);
             this.tsbAbout.Text = "About";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // tsbPreferences
             // 
             this.tsbPreferences.Name = "tsbPreferences";
-            this.tsbPreferences.Size = new System.Drawing.Size(180, 22);
+            this.tsbPreferences.Size = new System.Drawing.Size(135, 22);
             this.tsbPreferences.Text = "Preferences";
             this.tsbPreferences.Click += new System.EventHandler(this.tsbPreferences_Click);
             // 
@@ -295,7 +296,8 @@ namespace Luau
             // logStatusStrip
             // 
             this.logStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusRunTime});
+            this.statusRunTime,
+            this.tsbHalt});
             this.logStatusStrip.Location = new System.Drawing.Point(0, 615);
             this.logStatusStrip.Name = "logStatusStrip";
             this.logStatusStrip.Size = new System.Drawing.Size(343, 22);
@@ -314,6 +316,15 @@ namespace Luau
             // ofd
             // 
             this.ofd.Filter = "Lua files|*.lua|All Files|*.*";
+            // 
+            // tsbHalt
+            // 
+            this.tsbHalt.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHalt.Name = "tsbHalt";
+            this.tsbHalt.ShowDropDownArrow = false;
+            this.tsbHalt.Size = new System.Drawing.Size(33, 20);
+            this.tsbHalt.Text = "Halt";
+            this.tsbHalt.Click += new System.EventHandler(this.tsbHalt_Click);
             // 
             // LuauForm
             // 
@@ -371,6 +382,7 @@ namespace Luau
         private ToolStripMenuItem tsbPreferences;
         private StatusStrip logStatusStrip;
         private ToolStripStatusLabel statusRunTime;
+        private ToolStripDropDownButton tsbHalt;
     }
 }
 

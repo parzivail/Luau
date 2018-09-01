@@ -97,6 +97,15 @@ namespace Luau.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Script forcibly halted..
+        /// </summary>
+        internal static string LogScriptHalted {
+            get {
+                return ResourceManager.GetString("LogScriptHalted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap luau {

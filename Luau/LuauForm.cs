@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Luau.Properties;
 using MoonSharp.Interpreter;
@@ -13,6 +14,7 @@ namespace Luau
     public partial class LuauForm : Form
     {
         private LuaInterpreter _interpreter;
+        private Stopwatch _stopwatch;
         private FindReplace _findReplace;
         private string _savedFileName;
         private bool _isAtSavePoint = true;
@@ -25,10 +27,15 @@ namespace Luau
         private void LuauForm_Load(object sender, EventArgs e)
         {
             CreateUntitledFile();
+
             _interpreter = new LuaInterpreter();
             _interpreter.Print += InterpreterOnPrint;
+            _interpreter.ExecutionStart += InterpreterOnExecutionStart;
+            _interpreter.ExecutionComplete += InterpreterOnExecutionComplete;
             _interpreter.LuaError += InterpreterOnLuaError;
             _interpreter.CsError += InterpreterOnCsError;
+
+            _stopwatch = new Stopwatch();
 
             ReloadStyles();
 
@@ -149,19 +156,68 @@ namespace Luau
 
         private void InterpreterOnPrint(object sender, string s)
         {
-            Print(s);
+            void MethodInvokerDelegate()
+            {
+                Print(s);
+            }
+
+            Invoke((MethodInvoker) MethodInvokerDelegate);
         }
 
         private void InterpreterOnLuaError(object sender, InterpreterException exception)
         {
-            Critical($">>> {Resources.LogError}:");
-            Critical($">>> {exception.DecoratedMessage}");
+            void MethodInvokerDelegate()
+            {
+                Critical($">>> {Resources.LogError}:");
+                Critical($">>> {exception.DecoratedMessage}");
+            }
+
+            Invoke((MethodInvoker)MethodInvokerDelegate);
         }
 
         private void InterpreterOnCsError(object sender, Exception exception)
         {
-            Critical($">>> {Resources.LogError}:");
-            Critical($">>> {exception.Message}");
+            void MethodInvokerDelegate()
+            {
+                if (exception is ThreadAbortException)
+                {
+                    Critical($">>> {Resources.LogScriptHalted}");
+                }
+                else
+                {
+                    Critical($">>> {Resources.LogError}:");
+                    Critical($">>> {exception.Message}");
+                }
+            }
+            
+            Invoke((MethodInvoker)MethodInvokerDelegate);
+        }
+
+        private void InterpreterOnExecutionStart(object sender, EventArgs eventArgs)
+        {
+            void MethodInvokerDelegate()
+            {
+                log.Clear();
+                tsbHalt.Enabled = true;
+            }
+
+            Invoke((MethodInvoker)MethodInvokerDelegate);
+
+            statusRunTime.Text = Resources.LogRunningScript;
+            _stopwatch.Restart();
+        }
+
+        private void InterpreterOnExecutionComplete(object sender, EventArgs eventArgs)
+        {
+            void MethodInvokerDelegate()
+            {
+                statusRunTime.Text = string.Format(Resources.LogExitedAfter, _stopwatch.Elapsed);
+                tsbHalt.Enabled = false;
+            }
+
+            Invoke((MethodInvoker)MethodInvokerDelegate);
+
+            _stopwatch.Stop();
         }
 
         private void TextArea_SavePointReached(object sender, EventArgs e)
@@ -223,15 +279,12 @@ namespace Luau
 
         private void tsbRun_Click(object sender, EventArgs e)
         {
-            log.Clear();
-            statusRunTime.Text = Resources.LogRunningScript;
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             _interpreter.Run(scintilla.Text);
+        }
 
-            stopwatch.Stop();
-            statusRunTime.Text = string.Format(Resources.LogExitedAfter, stopwatch.Elapsed);
+        private void tsbHalt_Click(object sender, EventArgs e)
+        {
+            _interpreter.Halt();
         }
 
         private void tsbFind_Click(object sender, EventArgs e)

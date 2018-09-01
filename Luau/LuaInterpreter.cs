@@ -10,6 +10,8 @@ namespace Luau
     internal class LuaInterpreter
     {
         public event EventHandler<string> Print;
+        public event EventHandler<EventArgs> ExecutionStart;
+        public event EventHandler<EventArgs> ExecutionComplete;
         public event EventHandler<InterpreterException> LuaError;
         public event EventHandler<Exception> CsError;
 
@@ -19,6 +21,8 @@ namespace Luau
             new LuaFs(),
             new LuaWeb()
         };
+
+        private Thread _luaExecThread;
 
         public LuaInterpreter()
         {
@@ -35,36 +39,35 @@ namespace Luau
             foreach (var addon in _addons)
                 _script.Globals[addon.GetAddonName()] = addon;
 
-            _script.Globals["sleep"] = (Action<int>)Sleep;
+            _script.Globals["sleep"] = (Action<int>)Thread.Sleep;
         }
 
-        private static void Sleep(int millis)
+        public void Run(string script)
         {
-            var end = DateTime.Now.AddMilliseconds(millis);
-            var i = 0;
-            while (DateTime.Now < end)
+            _luaExecThread = new Thread(() =>
             {
-                if (i++ % 20 == 0)
-                    Application.DoEvents();
-            }
+                try
+                {
+                    ExecutionStart?.Invoke(this, EventArgs.Empty);
+                    _script.DoString(script, codeFriendlyName: "script");
+                    ExecutionComplete?.Invoke(this, EventArgs.Empty);
+                }
+                catch (InterpreterException e)
+                {
+                    LuaError?.Invoke(this, e);
+                }
+                catch (Exception e)
+                {
+                    CsError?.Invoke(this, e);
+                }
+            });
+            _luaExecThread.Start();
         }
 
-        public bool Run(string script)
+        public void Halt()
         {
-            try
-            {
-                _script.DoString(script, codeFriendlyName: "script");
-                return true;
-            }
-            catch (InterpreterException e)
-            {
-                LuaError?.Invoke(this, e);
-            }
-            catch (Exception e)
-            {
-                CsError?.Invoke(this, e);
-            }
-            return false;
+            _luaExecThread?.Abort();
+            ExecutionComplete?.Invoke(this, EventArgs.Empty);
         }
     }
 }
