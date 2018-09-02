@@ -39,9 +39,6 @@ namespace Luau
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClose = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbRichCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbHtmlCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbFind = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbFindNext = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbFindPrevious = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,9 +139,6 @@ namespace Luau
             // tsbEdit
             // 
             this.tsbEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbRichCopy,
-            this.tsbHtmlCopy,
-            this.toolStripSeparator1,
             this.tsbFind,
             this.tsbFindNext,
             this.tsbFindPrevious,
@@ -155,34 +149,11 @@ namespace Luau
             this.tsbEdit.Size = new System.Drawing.Size(39, 20);
             this.tsbEdit.Text = "Edit";
             // 
-            // tsbRichCopy
-            // 
-            this.tsbRichCopy.Name = "tsbRichCopy";
-            this.tsbRichCopy.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.C)));
-            this.tsbRichCopy.Size = new System.Drawing.Size(203, 22);
-            this.tsbRichCopy.Text = "Copy RTF";
-            this.tsbRichCopy.Click += new System.EventHandler(this.tsbRichCopy_Click);
-            // 
-            // tsbHtmlCopy
-            // 
-            this.tsbHtmlCopy.Name = "tsbHtmlCopy";
-            this.tsbHtmlCopy.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.C)));
-            this.tsbHtmlCopy.Size = new System.Drawing.Size(203, 22);
-            this.tsbHtmlCopy.Text = "Copy HTML";
-            this.tsbHtmlCopy.Click += new System.EventHandler(this.tsbHtmlCopy_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(200, 6);
-            // 
             // tsbFind
             // 
             this.tsbFind.Name = "tsbFind";
             this.tsbFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.tsbFind.Size = new System.Drawing.Size(203, 22);
+            this.tsbFind.Size = new System.Drawing.Size(196, 22);
             this.tsbFind.Text = "Find";
             this.tsbFind.Click += new System.EventHandler(this.tsbFind_Click);
             // 
@@ -190,7 +161,7 @@ namespace Luau
             // 
             this.tsbFindNext.Name = "tsbFindNext";
             this.tsbFindNext.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.tsbFindNext.Size = new System.Drawing.Size(203, 22);
+            this.tsbFindNext.Size = new System.Drawing.Size(196, 22);
             this.tsbFindNext.Text = "Find Next";
             this.tsbFindNext.Click += new System.EventHandler(this.tsbFindNext_Click);
             // 
@@ -198,7 +169,7 @@ namespace Luau
             // 
             this.tsbFindPrevious.Name = "tsbFindPrevious";
             this.tsbFindPrevious.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F3)));
-            this.tsbFindPrevious.Size = new System.Drawing.Size(203, 22);
+            this.tsbFindPrevious.Size = new System.Drawing.Size(196, 22);
             this.tsbFindPrevious.Text = "Find Previous";
             this.tsbFindPrevious.Click += new System.EventHandler(this.tsbFindPrevious_Click);
             // 
@@ -206,20 +177,20 @@ namespace Luau
             // 
             this.tsbReplace.Name = "tsbReplace";
             this.tsbReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.tsbReplace.Size = new System.Drawing.Size(203, 22);
+            this.tsbReplace.Size = new System.Drawing.Size(196, 22);
             this.tsbReplace.Text = "Replace";
             this.tsbReplace.Click += new System.EventHandler(this.tsbReplace_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(200, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(193, 6);
             // 
             // tsbGoToLine
             // 
             this.tsbGoToLine.Name = "tsbGoToLine";
             this.tsbGoToLine.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.tsbGoToLine.Size = new System.Drawing.Size(203, 22);
+            this.tsbGoToLine.Size = new System.Drawing.Size(196, 22);
             this.tsbGoToLine.Text = "Go To Line";
             this.tsbGoToLine.Click += new System.EventHandler(this.tsbGoToLine_Click);
             // 
@@ -431,9 +402,6 @@ namespace Luau
         private System.Windows.Forms.ToolStripMenuItem tsbOpen;
         private System.Windows.Forms.ToolStripMenuItem tsbSave;
         private System.Windows.Forms.ToolStripMenuItem tsbSaveAs;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem tsbRichCopy;
-        private System.Windows.Forms.ToolStripMenuItem tsbHtmlCopy;
         private System.Windows.Forms.ToolStripMenuItem tsbGoToLine;
         private System.Windows.Forms.ToolStripMenuItem tsbFindNext;
         private System.Windows.Forms.ToolStripMenuItem tsbFindPrevious;

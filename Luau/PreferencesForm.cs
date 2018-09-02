@@ -14,6 +14,7 @@ namespace Luau
     public partial class PreferencesForm : Form
     {
         private List<string> _fonts;
+        private bool _manuallyClosing;
 
         public PreferencesForm()
         {
@@ -56,8 +57,23 @@ namespace Luau
 
         private void PreferencesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SavePreferences();
-            Settings.Default.Save();
+            if (_manuallyClosing)
+                return;
+
+            var result = MessageBox.Show(Resources.WarningPreferenceChanges, Resources.Warning, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    SaveAndClose();
+                    break;
+                case DialogResult.No:
+                    _manuallyClosing = true;
+                    Close();
+                    break;
+                default:
+                    e.Cancel = true;
+                    break;
+            }
         }
 
         private void bcText_Click(object sender, EventArgs e)
@@ -175,6 +191,25 @@ namespace Luau
 
             Settings.Default.StyleEditorBackground = colorPicker.Color;
             bcEditorbackground.BackColor = Settings.Default.StyleEditorBackground;
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            SaveAndClose();
+        }
+
+        private void SaveAndClose()
+        {
+            SavePreferences();
+            Settings.Default.Save();
+            _manuallyClosing = true;
+            Close();
+        }
+
+        private void bCancel_Click(object sender, EventArgs e)
+        {
+            _manuallyClosing = true;
+            Close();
         }
     }
 }

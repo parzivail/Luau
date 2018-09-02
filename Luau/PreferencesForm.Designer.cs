@@ -57,7 +57,6 @@
             this.bcComment = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.bcText = new System.Windows.Forms.Button();
-            this.lNotice = new System.Windows.Forms.Label();
             this.gFonts = new System.Windows.Forms.GroupBox();
             this.nudFontSize = new System.Windows.Forms.NumericUpDown();
             this.lEditorFontSize = new System.Windows.Forms.Label();
@@ -65,6 +64,8 @@
             this.cbFont = new System.Windows.Forms.ComboBox();
             this.tabsSettings = new System.Windows.Forms.TabControl();
             this.colorPicker = new System.Windows.Forms.ColorDialog();
+            this.bSave = new System.Windows.Forms.Button();
+            this.bCancel = new System.Windows.Forms.Button();
             this.tabFonts.SuspendLayout();
             this.gColors.SuspendLayout();
             this.gFonts.SuspendLayout();
@@ -74,13 +75,14 @@
             // 
             // tabFonts
             // 
+            this.tabFonts.Controls.Add(this.bCancel);
+            this.tabFonts.Controls.Add(this.bSave);
             this.tabFonts.Controls.Add(this.gColors);
-            this.tabFonts.Controls.Add(this.lNotice);
             this.tabFonts.Controls.Add(this.gFonts);
             this.tabFonts.Location = new System.Drawing.Point(4, 22);
             this.tabFonts.Name = "tabFonts";
             this.tabFonts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFonts.Size = new System.Drawing.Size(476, 335);
+            this.tabFonts.Size = new System.Drawing.Size(476, 345);
             this.tabFonts.TabIndex = 0;
             this.tabFonts.Text = "Fonts and Colors";
             this.tabFonts.UseVisualStyleBackColor = true;
@@ -118,7 +120,7 @@
             this.gColors.Controls.Add(this.bcText);
             this.gColors.Location = new System.Drawing.Point(8, 93);
             this.gColors.Name = "gColors";
-            this.gColors.Size = new System.Drawing.Size(460, 221);
+            this.gColors.Size = new System.Drawing.Size(460, 215);
             this.gColors.TabIndex = 2;
             this.gColors.TabStop = false;
             this.gColors.Text = "Colors";
@@ -370,16 +372,6 @@
             this.bcText.UseVisualStyleBackColor = true;
             this.bcText.Click += new System.EventHandler(this.bcText_Click);
             // 
-            // lNotice
-            // 
-            this.lNotice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lNotice.AutoSize = true;
-            this.lNotice.Location = new System.Drawing.Point(3, 317);
-            this.lNotice.Name = "lNotice";
-            this.lNotice.Size = new System.Drawing.Size(372, 13);
-            this.lNotice.TabIndex = 1;
-            this.lNotice.Text = "Note: Changed settings will automatically be saved when this dialog is closed.";
-            // 
             // gFonts
             // 
             this.gFonts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -451,7 +443,7 @@
             this.tabsSettings.Location = new System.Drawing.Point(0, 0);
             this.tabsSettings.Name = "tabsSettings";
             this.tabsSettings.SelectedIndex = 0;
-            this.tabsSettings.Size = new System.Drawing.Size(484, 361);
+            this.tabsSettings.Size = new System.Drawing.Size(484, 371);
             this.tabsSettings.TabIndex = 0;
             // 
             // colorPicker
@@ -459,11 +451,33 @@
             this.colorPicker.AnyColor = true;
             this.colorPicker.FullOpen = true;
             // 
+            // bSave
+            // 
+            this.bSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bSave.Location = new System.Drawing.Point(393, 314);
+            this.bSave.Name = "bSave";
+            this.bSave.Size = new System.Drawing.Size(75, 23);
+            this.bSave.TabIndex = 3;
+            this.bSave.Text = "Save";
+            this.bSave.UseVisualStyleBackColor = true;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            // 
+            // bCancel
+            // 
+            this.bCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bCancel.Location = new System.Drawing.Point(312, 314);
+            this.bCancel.Name = "bCancel";
+            this.bCancel.Size = new System.Drawing.Size(75, 23);
+            this.bCancel.TabIndex = 4;
+            this.bCancel.Text = "Cancel";
+            this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
+            // 
             // PreferencesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 361);
+            this.ClientSize = new System.Drawing.Size(484, 371);
             this.Controls.Add(this.tabsSettings);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -474,7 +488,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesForm_FormClosing);
             this.Load += new System.EventHandler(this.PreferencesForm_Load);
             this.tabFonts.ResumeLayout(false);
-            this.tabFonts.PerformLayout();
             this.gColors.ResumeLayout(false);
             this.gColors.PerformLayout();
             this.gFonts.ResumeLayout(false);
@@ -494,7 +507,6 @@
         private System.Windows.Forms.NumericUpDown nudFontSize;
         private System.Windows.Forms.Label lEditorFontSize;
         private System.Windows.Forms.Label lEditorFont;
-        private System.Windows.Forms.Label lNotice;
         private System.Windows.Forms.GroupBox gColors;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bcText;
@@ -523,5 +535,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button bcComment;
         private System.Windows.Forms.ColorDialog colorPicker;
+        private System.Windows.Forms.Button bCancel;
+        private System.Windows.Forms.Button bSave;
     }
 }

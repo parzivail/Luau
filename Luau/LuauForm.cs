@@ -147,6 +147,12 @@ namespace Luau
             LoadLogStyles();
         }
 
+        private void ClearOutputs()
+        {
+            log.Clear();
+            logErr.Clear();
+        }
+
         private void Print(string msg)
         {
             tabsOutput.SelectedTab = tabOutput;
@@ -282,6 +288,7 @@ namespace Luau
 
         private void tsbRun_Click(object sender, EventArgs e)
         {
+            ClearOutputs();
             _interpreter.Run(scintilla.Text);
         }
 
@@ -298,18 +305,6 @@ namespace Luau
         private void tsbReplace_Click(object sender, EventArgs e)
         {
             _findReplace.ShowReplace();
-        }
-
-        private void tsbRichCopy_Click(object sender, EventArgs e)
-        {
-            if (scintilla.Focused)
-                scintilla.Copy(CopyFormat.Rtf);
-        }
-
-        private void tsbHtmlCopy_Click(object sender, EventArgs e)
-        {
-            if (scintilla.Focused)
-                scintilla.Copy(CopyFormat.Html);
         }
 
         private void tsbGoToLine_Click(object sender, EventArgs e)

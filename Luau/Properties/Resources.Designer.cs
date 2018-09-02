@@ -154,6 +154,15 @@ namespace Luau.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to save your preference changes?.
+        /// </summary>
+        internal static string WarningPreferenceChanges {
+            get {
+                return ResourceManager.GetString("WarningPreferenceChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have unsaved changes. Save before closing?.
         /// </summary>
         internal static string WarningUnsavedChanges {
