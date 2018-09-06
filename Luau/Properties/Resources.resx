@@ -154,4 +154,16 @@
   <data name="WarningPreferenceChanges" xml:space="preserve">
     <value>Do you want to save your preference changes?</value>
   </data>
+  <data name="ErrorCantCreateRegistryKey" xml:space="preserve">
+    <value>Unable to create registry key! Try running as Administrator.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="InfoAddedContextMenu" xml:space="preserve">
+    <value>Added context menu registry key.</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

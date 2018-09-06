@@ -81,11 +81,47 @@ namespace Luau.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to create registry key! Try running as Administrator..
+        /// </summary>
+        internal static string ErrorCantCreateRegistryKey {
+            get {
+                return ResourceManager.GetString("ErrorCantCreateRegistryKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to untitled.
         /// </summary>
         internal static string FileUntitled {
             get {
                 return ResourceManager.GetString("FileUntitled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        internal static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added context menu registry key..
+        /// </summary>
+        internal static string InfoAddedContextMenu {
+            get {
+                return ResourceManager.GetString("InfoAddedContextMenu", resourceCulture);
             }
         }
         

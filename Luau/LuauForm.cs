@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using Luau.Properties;
+using Microsoft.Win32;
 using MoonSharp.Interpreter;
 using ScintillaNET;
 using ScintillaNET_FindReplaceDialog;
@@ -359,6 +360,42 @@ namespace Luau
             var prefForm = new PreferencesForm();
             prefForm.ShowDialog(this);
             ReloadStyles();
+        }
+
+        private void tsbCtxEnable_Click(object sender, EventArgs e)
+        {
+            var key = Registry.ClassesRoot.CreateSubKey("Directory\\Background\\shell\\Luau");
+            if (key == null)
+            {
+                MessageBox.Show(Resources.ErrorCantCreateRegistryKey, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            key.SetValue(null, "Open Luau Here");
+            key.SetValue("Icon", "\"%LUAU_ROOT%\\Extras\\luau_icon.ico\",0", RegistryValueKind.ExpandString);
+
+            key = key.CreateSubKey("command");
+            if (key == null)
+            {
+                MessageBox.Show(Resources.ErrorCantCreateRegistryKey, Resources.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            key.SetValue(null, "\"%LUAU_ROOT%\\Luau.exe\" -d \"%v\"", RegistryValueKind.ExpandString);
+
+            key.Close();
+
+            MessageBox.Show(Resources.InfoAddedContextMenu, Resources.Info, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void tsbCtxDisable_Click(object sender, EventArgs e)
+        {
+            var key = Registry.ClassesRoot.CreateSubKey("Directory\\Background\\shell");
+            if (key == null)
+                return;
+
+            key.DeleteSubKeyTree("Luau");
+            key.Close();
         }
     }
 }
