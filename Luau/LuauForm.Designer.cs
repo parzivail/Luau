@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using OpenTK;
 
 namespace Luau
 {
@@ -48,6 +49,10 @@ namespace Luau
             this.tsbHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbPreferences = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbIntegrations = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbContextMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCtxEnable = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbCtxDisable = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbRun = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.scintilla = new ScintillaNET.Scintilla();
@@ -61,10 +66,8 @@ namespace Luau
             this.tsbHalt = new System.Windows.Forms.ToolStripDropDownButton();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.tsbIntegrations = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbContextMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbCtxEnable = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbCtxDisable = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabSimulation = new System.Windows.Forms.TabPage();
+            this.simulation = new GLControl();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -211,16 +214,47 @@ namespace Luau
             // tsbAbout
             // 
             this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(180, 22);
+            this.tsbAbout.Size = new System.Drawing.Size(137, 22);
             this.tsbAbout.Text = "About";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // tsbPreferences
             // 
             this.tsbPreferences.Name = "tsbPreferences";
-            this.tsbPreferences.Size = new System.Drawing.Size(180, 22);
+            this.tsbPreferences.Size = new System.Drawing.Size(137, 22);
             this.tsbPreferences.Text = "Preferences";
             this.tsbPreferences.Click += new System.EventHandler(this.tsbPreferences_Click);
+            // 
+            // tsbIntegrations
+            // 
+            this.tsbIntegrations.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbContextMenu});
+            this.tsbIntegrations.Name = "tsbIntegrations";
+            this.tsbIntegrations.Size = new System.Drawing.Size(137, 22);
+            this.tsbIntegrations.Text = "Integrations";
+            // 
+            // tsbContextMenu
+            // 
+            this.tsbContextMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbCtxEnable,
+            this.tsbCtxDisable});
+            this.tsbContextMenu.Name = "tsbContextMenu";
+            this.tsbContextMenu.Size = new System.Drawing.Size(149, 22);
+            this.tsbContextMenu.Text = "Context Menu";
+            // 
+            // tsbCtxEnable
+            // 
+            this.tsbCtxEnable.Name = "tsbCtxEnable";
+            this.tsbCtxEnable.Size = new System.Drawing.Size(112, 22);
+            this.tsbCtxEnable.Text = "Enable";
+            this.tsbCtxEnable.Click += new System.EventHandler(this.tsbCtxEnable_Click);
+            // 
+            // tsbCtxDisable
+            // 
+            this.tsbCtxDisable.Name = "tsbCtxDisable";
+            this.tsbCtxDisable.Size = new System.Drawing.Size(112, 22);
+            this.tsbCtxDisable.Text = "Disable";
+            this.tsbCtxDisable.Click += new System.EventHandler(this.tsbCtxDisable_Click);
             // 
             // tsbRun
             // 
@@ -271,6 +305,7 @@ namespace Luau
             // 
             this.tabsOutput.Controls.Add(this.tabOutput);
             this.tabsOutput.Controls.Add(this.tabErrors);
+            this.tabsOutput.Controls.Add(this.tabSimulation);
             this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabsOutput.Location = new System.Drawing.Point(0, 0);
             this.tabsOutput.Name = "tabsOutput";
@@ -363,36 +398,25 @@ namespace Luau
             // 
             this.ofd.Filter = "Lua files|*.lua|All Files|*.*";
             // 
-            // tsbIntegrations
+            // tabSimulation
             // 
-            this.tsbIntegrations.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbContextMenu});
-            this.tsbIntegrations.Name = "tsbIntegrations";
-            this.tsbIntegrations.Size = new System.Drawing.Size(180, 22);
-            this.tsbIntegrations.Text = "Integrations";
-            // 
-            // tsbContextMenu
-            // 
-            this.tsbContextMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbCtxEnable,
-            this.tsbCtxDisable});
-            this.tsbContextMenu.Name = "tsbContextMenu";
-            this.tsbContextMenu.Size = new System.Drawing.Size(180, 22);
-            this.tsbContextMenu.Text = "Context Menu";
-            // 
-            // tsbCtxEnable
-            // 
-            this.tsbCtxEnable.Name = "tsbCtxEnable";
-            this.tsbCtxEnable.Size = new System.Drawing.Size(180, 22);
-            this.tsbCtxEnable.Text = "Enable";
-            this.tsbCtxEnable.Click += new System.EventHandler(this.tsbCtxEnable_Click);
-            // 
-            // tsbCtxDisable
-            // 
-            this.tsbCtxDisable.Name = "tsbCtxDisable";
-            this.tsbCtxDisable.Size = new System.Drawing.Size(180, 22);
-            this.tsbCtxDisable.Text = "Disable";
-            this.tsbCtxDisable.Click += new System.EventHandler(this.tsbCtxDisable_Click);
+            this.tabSimulation.Controls.Add(this.simulation);
+            this.tabSimulation.Location = new System.Drawing.Point(4, 22);
+            this.tabSimulation.Name = "tabSimulation";
+            this.tabSimulation.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSimulation.Size = new System.Drawing.Size(335, 589);
+            this.tabSimulation.TabIndex = 2;
+            this.tabSimulation.Text = "Simulation";
+            this.tabSimulation.UseVisualStyleBackColor = true;
+            //
+            // simulation
+            //
+            this.simulation.BackColor = System.Drawing.SystemColors.Window;
+            this.simulation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.simulation.Location = new System.Drawing.Point(3, 3);
+            this.simulation.Name = "simulation";
+            this.simulation.Size = new System.Drawing.Size(329, 583);
+            this.simulation.TabIndex = 1;
             // 
             // LuauForm
             // 
@@ -461,6 +485,8 @@ namespace Luau
         private ToolStripMenuItem tsbContextMenu;
         private ToolStripMenuItem tsbCtxEnable;
         private ToolStripMenuItem tsbCtxDisable;
+        private TabPage tabSimulation;
+        private GLControl simulation;
     }
 }
 
