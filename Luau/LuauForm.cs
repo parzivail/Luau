@@ -19,6 +19,7 @@ namespace Luau
         private FindReplace _findReplace;
         private string _savedFileName;
         private bool _isAtSavePoint = true;
+        private Simulator _simulator;
 
         public LuauForm()
         {
@@ -44,6 +45,8 @@ namespace Luau
             scintilla.SavePointReached += TextArea_SavePointReached;
 
             _findReplace = new FindReplace(scintilla);
+
+            _simulator = new Simulator(glSimulation);
         }
 
         private void LuauForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -152,6 +155,12 @@ namespace Luau
         {
             log.Clear();
             logErr.Clear();
+            ResetSimulation();
+        }
+
+        private void ResetSimulation()
+        {
+            throw new NotImplementedException();
         }
 
         private void Print(string msg)

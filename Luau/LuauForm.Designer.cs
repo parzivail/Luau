@@ -56,27 +56,28 @@ namespace Luau
             this.tsbRun = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.scintilla = new ScintillaNET.Scintilla();
-            this.tabsOutput = new System.Windows.Forms.TabControl();
-            this.tabOutput = new System.Windows.Forms.TabPage();
-            this.log = new System.Windows.Forms.TextBox();
-            this.tabErrors = new System.Windows.Forms.TabPage();
-            this.logErr = new System.Windows.Forms.TextBox();
             this.logStatusStrip = new System.Windows.Forms.StatusStrip();
             this.statusRunTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsbHalt = new System.Windows.Forms.ToolStripDropDownButton();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.tabErrors = new System.Windows.Forms.TabPage();
+            this.logErr = new System.Windows.Forms.TextBox();
+            this.tabOutput = new System.Windows.Forms.TabPage();
+            this.log = new System.Windows.Forms.TextBox();
+            this.tabsOutput = new System.Windows.Forms.TabControl();
             this.tabSimulation = new System.Windows.Forms.TabPage();
-            this.simulation = new GLControl();
+            this.glSimulation = new OpenTK.GLControl();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabsOutput.SuspendLayout();
-            this.tabOutput.SuspendLayout();
-            this.tabErrors.SuspendLayout();
             this.logStatusStrip.SuspendLayout();
+            this.tabErrors.SuspendLayout();
+            this.tabOutput.SuspendLayout();
+            this.tabsOutput.SuspendLayout();
+            this.tabSimulation.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -301,66 +302,6 @@ namespace Luau
             this.scintilla.Technology = ScintillaNET.Technology.DirectWrite;
             this.scintilla.UseTabs = true;
             // 
-            // tabsOutput
-            // 
-            this.tabsOutput.Controls.Add(this.tabOutput);
-            this.tabsOutput.Controls.Add(this.tabErrors);
-            this.tabsOutput.Controls.Add(this.tabSimulation);
-            this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabsOutput.Location = new System.Drawing.Point(0, 0);
-            this.tabsOutput.Name = "tabsOutput";
-            this.tabsOutput.SelectedIndex = 0;
-            this.tabsOutput.Size = new System.Drawing.Size(343, 615);
-            this.tabsOutput.TabIndex = 3;
-            // 
-            // tabOutput
-            // 
-            this.tabOutput.Controls.Add(this.log);
-            this.tabOutput.Location = new System.Drawing.Point(4, 22);
-            this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOutput.Size = new System.Drawing.Size(335, 589);
-            this.tabOutput.TabIndex = 0;
-            this.tabOutput.Text = "Output";
-            this.tabOutput.UseVisualStyleBackColor = true;
-            // 
-            // log
-            // 
-            this.log.BackColor = System.Drawing.SystemColors.Window;
-            this.log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.log.Location = new System.Drawing.Point(3, 3);
-            this.log.Multiline = true;
-            this.log.Name = "log";
-            this.log.ReadOnly = true;
-            this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.log.Size = new System.Drawing.Size(329, 583);
-            this.log.TabIndex = 0;
-            this.log.WordWrap = false;
-            // 
-            // tabErrors
-            // 
-            this.tabErrors.Controls.Add(this.logErr);
-            this.tabErrors.Location = new System.Drawing.Point(4, 22);
-            this.tabErrors.Name = "tabErrors";
-            this.tabErrors.Padding = new System.Windows.Forms.Padding(3);
-            this.tabErrors.Size = new System.Drawing.Size(335, 589);
-            this.tabErrors.TabIndex = 1;
-            this.tabErrors.Text = "Errors";
-            this.tabErrors.UseVisualStyleBackColor = true;
-            // 
-            // logErr
-            // 
-            this.logErr.BackColor = System.Drawing.SystemColors.Window;
-            this.logErr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logErr.Location = new System.Drawing.Point(3, 3);
-            this.logErr.Multiline = true;
-            this.logErr.Name = "logErr";
-            this.logErr.ReadOnly = true;
-            this.logErr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.logErr.Size = new System.Drawing.Size(329, 583);
-            this.logErr.TabIndex = 1;
-            this.logErr.WordWrap = false;
-            // 
             // logStatusStrip
             // 
             this.logStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -398,25 +339,85 @@ namespace Luau
             // 
             this.ofd.Filter = "Lua files|*.lua|All Files|*.*";
             // 
+            // tabErrors
+            // 
+            this.tabErrors.Controls.Add(this.logErr);
+            this.tabErrors.Location = new System.Drawing.Point(4, 22);
+            this.tabErrors.Name = "tabErrors";
+            this.tabErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabErrors.Size = new System.Drawing.Size(335, 589);
+            this.tabErrors.TabIndex = 1;
+            this.tabErrors.Text = "Errors";
+            this.tabErrors.UseVisualStyleBackColor = true;
+            // 
+            // logErr
+            // 
+            this.logErr.BackColor = System.Drawing.SystemColors.Window;
+            this.logErr.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logErr.Location = new System.Drawing.Point(3, 3);
+            this.logErr.Multiline = true;
+            this.logErr.Name = "logErr";
+            this.logErr.ReadOnly = true;
+            this.logErr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.logErr.Size = new System.Drawing.Size(329, 583);
+            this.logErr.TabIndex = 1;
+            this.logErr.WordWrap = false;
+            // 
+            // tabOutput
+            // 
+            this.tabOutput.Controls.Add(this.log);
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(335, 589);
+            this.tabOutput.TabIndex = 0;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
+            // 
+            // log
+            // 
+            this.log.BackColor = System.Drawing.SystemColors.Window;
+            this.log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.log.Location = new System.Drawing.Point(3, 3);
+            this.log.Multiline = true;
+            this.log.Name = "log";
+            this.log.ReadOnly = true;
+            this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.log.Size = new System.Drawing.Size(329, 583);
+            this.log.TabIndex = 0;
+            this.log.WordWrap = false;
+            // 
+            // tabsOutput
+            // 
+            this.tabsOutput.Controls.Add(this.tabOutput);
+            this.tabsOutput.Controls.Add(this.tabErrors);
+            this.tabsOutput.Controls.Add(this.tabSimulation);
+            this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabsOutput.Location = new System.Drawing.Point(0, 0);
+            this.tabsOutput.Name = "tabsOutput";
+            this.tabsOutput.SelectedIndex = 0;
+            this.tabsOutput.Size = new System.Drawing.Size(343, 615);
+            this.tabsOutput.TabIndex = 3;
+            // 
             // tabSimulation
             // 
-            this.tabSimulation.Controls.Add(this.simulation);
+            this.tabSimulation.Controls.Add(this.glSimulation);
             this.tabSimulation.Location = new System.Drawing.Point(4, 22);
             this.tabSimulation.Name = "tabSimulation";
-            this.tabSimulation.Padding = new System.Windows.Forms.Padding(3);
             this.tabSimulation.Size = new System.Drawing.Size(335, 589);
             this.tabSimulation.TabIndex = 2;
             this.tabSimulation.Text = "Simulation";
             this.tabSimulation.UseVisualStyleBackColor = true;
-            //
-            // simulation
-            //
-            this.simulation.BackColor = System.Drawing.SystemColors.Window;
-            this.simulation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.simulation.Location = new System.Drawing.Point(3, 3);
-            this.simulation.Name = "simulation";
-            this.simulation.Size = new System.Drawing.Size(329, 583);
-            this.simulation.TabIndex = 1;
+            // 
+            // glSimulation
+            // 
+            this.glSimulation.BackColor = System.Drawing.Color.Black;
+            this.glSimulation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glSimulation.Location = new System.Drawing.Point(0, 0);
+            this.glSimulation.Name = "glSimulation";
+            this.glSimulation.Size = new System.Drawing.Size(335, 589);
+            this.glSimulation.TabIndex = 0;
+            this.glSimulation.VSync = false;
             // 
             // LuauForm
             // 
@@ -438,13 +439,14 @@ namespace Luau
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabsOutput.ResumeLayout(false);
-            this.tabOutput.ResumeLayout(false);
-            this.tabOutput.PerformLayout();
-            this.tabErrors.ResumeLayout(false);
-            this.tabErrors.PerformLayout();
             this.logStatusStrip.ResumeLayout(false);
             this.logStatusStrip.PerformLayout();
+            this.tabErrors.ResumeLayout(false);
+            this.tabErrors.PerformLayout();
+            this.tabOutput.ResumeLayout(false);
+            this.tabOutput.PerformLayout();
+            this.tabsOutput.ResumeLayout(false);
+            this.tabSimulation.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -476,17 +478,17 @@ namespace Luau
         private StatusStrip logStatusStrip;
         private ToolStripStatusLabel statusRunTime;
         private ToolStripDropDownButton tsbHalt;
-        private TabControl tabsOutput;
-        private TabPage tabOutput;
-        private TabPage tabErrors;
-        private TextBox log;
-        private TextBox logErr;
         private ToolStripMenuItem tsbIntegrations;
         private ToolStripMenuItem tsbContextMenu;
         private ToolStripMenuItem tsbCtxEnable;
         private ToolStripMenuItem tsbCtxDisable;
+        private TabControl tabsOutput;
+        private TabPage tabOutput;
+        private TextBox log;
+        private TabPage tabErrors;
+        private TextBox logErr;
         private TabPage tabSimulation;
-        private GLControl simulation;
+        private GLControl glSimulation;
     }
 }
 
