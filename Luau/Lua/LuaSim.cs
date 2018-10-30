@@ -20,5 +20,10 @@ namespace Luau.Lua
         {
             LuauForm.Instance.ShowSimulator();
         }
+
+        public void draw()
+        {
+            LuauForm.Instance.GetSimulator()?.Draw();
+        }
     }
 }

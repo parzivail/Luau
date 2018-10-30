@@ -43,5 +43,10 @@ namespace Luau
             else
                 Close();
         }
+
+        public Simulator GetSimulator()
+        {
+            return _simulator;
+        }
     }
 }

@@ -14,10 +14,12 @@ namespace Luau
     public class Simulator
     {
         private readonly GLControl _control;
+        private readonly List<SimBody> _bodies;
 
         public Simulator(GLControl control)
         {
             _control = control;
+            _bodies = new List<SimBody>();
 
             control.Resize += GlSimulationOnResize;
             control.Paint += GlSimulationOnPaint;
@@ -32,13 +34,8 @@ namespace Luau
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.Color3(Color.Red);
-            GL.Begin(PrimitiveType.Quads);
-            GL.Vertex2(5, 5);
-            GL.Vertex2(15, 5);
-            GL.Vertex2(15, 15);
-            GL.Vertex2(5, 15);
-            GL.End();
+            foreach (var simBody in _bodies)
+                simBody.Render();
 
             _control.SwapBuffers();
         }
@@ -79,5 +76,13 @@ namespace Luau
 
             GL.ClearColor(Color.White);
         }
+    }
+
+    internal abstract class SimBody
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public abstract void Render();
     }
 }

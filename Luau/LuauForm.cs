@@ -175,10 +175,7 @@ namespace Luau
 
         private void InterpreterOnPrint(object sender, string s)
         {
-            void MethodInvokerDelegate()
-            {
-                Print(s);
-            }
+            void MethodInvokerDelegate() => Print(s);
 
             Invoke((MethodInvoker)MethodInvokerDelegate);
         }
@@ -417,6 +414,11 @@ namespace Luau
                     Application.Run(_simForm);
                 });
             }));
+        }
+
+        public Simulator GetSimulator()
+        {
+            return _simForm.GetSimulator();
         }
     }
 }
