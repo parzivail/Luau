@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Luau.Properties;
+using Luau.Sim;
 using Microsoft.Win32;
 using MoonSharp.Interpreter;
 using ScintillaNET;
@@ -20,7 +21,7 @@ namespace Luau
         private FindReplace _findReplace;
         private string _savedFileName;
         private bool _isAtSavePoint = true;
-        private SimulatorForm _simForm;
+        private SimulatorWindow _simForm;
 
         public static LuauForm Instance { get; private set; }
 
@@ -56,7 +57,7 @@ namespace Luau
             if (!TryCloseFile())
                 e.Cancel = true;
 
-            _simForm?.Stop();
+            _simForm?.Kill();
 
             // Awful hack to make sure the copied text persists when the window closes
             if (Clipboard.ContainsText())
@@ -406,14 +407,16 @@ namespace Luau
         {
             Invoke(new Action(() =>
             {
-                _simForm?.Stop();
+                _simForm?.Kill();
 
-                _simForm = new SimulatorForm(this);
-                Task.Factory.StartNew(() =>
+                _simForm = new SimulatorWindow();
+                new Task(() =>
                 {
-                    Application.Run(_simForm);
-                });
+                    _simForm.Run();
+                }).Start();
             }));
+            while (!_simForm.Ready)
+                Application.DoEvents();
         }
 
         public Simulator GetSimulator()
