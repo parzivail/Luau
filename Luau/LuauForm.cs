@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Luau.Properties;
 using Microsoft.Win32;
@@ -19,7 +20,9 @@ namespace Luau
         private FindReplace _findReplace;
         private string _savedFileName;
         private bool _isAtSavePoint = true;
-        private Simulator _simulator;
+        private SimulatorForm _simForm;
+
+        public static LuauForm Instance { get; private set; }
 
         public LuauForm()
         {
@@ -28,6 +31,7 @@ namespace Luau
 
         private void LuauForm_Load(object sender, EventArgs e)
         {
+            Instance = this;
             CreateUntitledFile();
 
             _interpreter = new LuaInterpreter();
@@ -45,14 +49,14 @@ namespace Luau
             scintilla.SavePointReached += TextArea_SavePointReached;
 
             _findReplace = new FindReplace(scintilla);
-
-            _simulator = new Simulator(glSimulation);
         }
 
         private void LuauForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!TryCloseFile())
                 e.Cancel = true;
+
+            _simForm?.Stop();
 
             // Awful hack to make sure the copied text persists when the window closes
             if (Clipboard.ContainsText())
@@ -155,12 +159,6 @@ namespace Luau
         {
             log.Clear();
             logErr.Clear();
-            ResetSimulation();
-        }
-
-        private void ResetSimulation()
-        {
-            throw new NotImplementedException();
         }
 
         private void Print(string msg)
@@ -182,7 +180,7 @@ namespace Luau
                 Print(s);
             }
 
-            Invoke((MethodInvoker) MethodInvokerDelegate);
+            Invoke((MethodInvoker)MethodInvokerDelegate);
         }
 
         private void InterpreterOnLuaError(object sender, InterpreterException exception)
@@ -208,7 +206,7 @@ namespace Luau
                     Critical($">>> {exception.Message}");
                 }
             }
-            
+
             Invoke((MethodInvoker)MethodInvokerDelegate);
         }
 
@@ -405,6 +403,20 @@ namespace Luau
 
             key.DeleteSubKeyTree("Luau");
             key.Close();
+        }
+
+        public void ShowSimulator()
+        {
+            Invoke(new Action(() =>
+            {
+                _simForm?.Stop();
+
+                _simForm = new SimulatorForm(this);
+                Task.Factory.StartNew(() =>
+                {
+                    Application.Run(_simForm);
+                });
+            }));
         }
     }
 }

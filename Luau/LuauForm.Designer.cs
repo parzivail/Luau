@@ -66,8 +66,6 @@ namespace Luau
             this.tabOutput = new System.Windows.Forms.TabPage();
             this.log = new System.Windows.Forms.TextBox();
             this.tabsOutput = new System.Windows.Forms.TabControl();
-            this.tabSimulation = new System.Windows.Forms.TabPage();
-            this.glSimulation = new OpenTK.GLControl();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -77,7 +75,6 @@ namespace Luau
             this.tabErrors.SuspendLayout();
             this.tabOutput.SuspendLayout();
             this.tabsOutput.SuspendLayout();
-            this.tabSimulation.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -391,33 +388,12 @@ namespace Luau
             // 
             this.tabsOutput.Controls.Add(this.tabOutput);
             this.tabsOutput.Controls.Add(this.tabErrors);
-            this.tabsOutput.Controls.Add(this.tabSimulation);
             this.tabsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabsOutput.Location = new System.Drawing.Point(0, 0);
             this.tabsOutput.Name = "tabsOutput";
             this.tabsOutput.SelectedIndex = 0;
             this.tabsOutput.Size = new System.Drawing.Size(343, 615);
             this.tabsOutput.TabIndex = 3;
-            // 
-            // tabSimulation
-            // 
-            this.tabSimulation.Controls.Add(this.glSimulation);
-            this.tabSimulation.Location = new System.Drawing.Point(4, 22);
-            this.tabSimulation.Name = "tabSimulation";
-            this.tabSimulation.Size = new System.Drawing.Size(335, 589);
-            this.tabSimulation.TabIndex = 2;
-            this.tabSimulation.Text = "Simulation";
-            this.tabSimulation.UseVisualStyleBackColor = true;
-            // 
-            // glSimulation
-            // 
-            this.glSimulation.BackColor = System.Drawing.Color.Black;
-            this.glSimulation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glSimulation.Location = new System.Drawing.Point(0, 0);
-            this.glSimulation.Name = "glSimulation";
-            this.glSimulation.Size = new System.Drawing.Size(335, 589);
-            this.glSimulation.TabIndex = 0;
-            this.glSimulation.VSync = false;
             // 
             // LuauForm
             // 
@@ -446,7 +422,6 @@ namespace Luau
             this.tabOutput.ResumeLayout(false);
             this.tabOutput.PerformLayout();
             this.tabsOutput.ResumeLayout(false);
-            this.tabSimulation.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -487,8 +462,6 @@ namespace Luau
         private TextBox log;
         private TabPage tabErrors;
         private TextBox logErr;
-        private TabPage tabSimulation;
-        private GLControl glSimulation;
     }
 }
 

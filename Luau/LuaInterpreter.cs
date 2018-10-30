@@ -19,7 +19,8 @@ namespace Luau
         private readonly List<ILuaAddon> _addons = new List<ILuaAddon>
         {
             new LuaFs(),
-            new LuaWeb()
+            new LuaWeb(),
+            new LuaSim()
         };
 
         private Thread _luaExecThread;
