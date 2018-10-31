@@ -35,8 +35,7 @@ namespace Luau.Lua
 
         public void circle(float x, float y, float r)
         {
-            var sim = LuauForm.Instance.GetSimulator();
-            sim?.AddFeature(new FeatureCircle { X = x, Y = y, Radius = r });
+            LuauForm.Instance.GetSimulator()?.AddFeature(new FeatureCircle { X = x, Y = y, Radius = r });
         }
 
         public void rect(float x, float y, float w, float h)

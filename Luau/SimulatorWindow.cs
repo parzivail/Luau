@@ -16,8 +16,6 @@ namespace Luau
 {
     class SimulatorWindow : GameWindow
     {
-        public bool Ready { get; set; }
-
         private bool _shouldDie;
 
         private NVGcontext _nvg = new NVGcontext();
@@ -55,8 +53,6 @@ namespace Luau
             GlNanoVG.nvgCreateGL(ref _nvg, (int)NvgCreateFlags.AntiAlias | (int)NvgCreateFlags.StencilStrokes);
 
             _simulator = new Simulator();
-
-            Ready = true;
         }
 
         private void CloseHandler(object sender, CancelEventArgs e)

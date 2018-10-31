@@ -405,18 +405,14 @@ namespace Luau
 
         public void ShowSimulator()
         {
-            Invoke(new Action(() =>
-            {
-                _simForm?.Kill();
-
+            _simForm?.Kill();
+            
+            var t = new Thread(() => {
                 _simForm = new SimulatorWindow();
-                new Task(() =>
-                {
-                    _simForm.Run();
-                }).Start();
-            }));
-            while (!_simForm.Ready)
-                Application.DoEvents();
+                _simForm.Run(20, 30);
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
         }
 
         public Simulator GetSimulator()
