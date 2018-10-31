@@ -24,9 +24,6 @@ namespace Luau.Sim
 
         public void Render(NVGcontext nvg)
         {
-            NanoVG.nvgStrokeWidth(nvg, 2);
-            NanoVG.nvgStrokeColor(nvg, NanoVG.nvgRGBA(0, 0, 0, 255));
-
             lock (_commands)
             {
                 NanoVG.nvgSave(nvg);

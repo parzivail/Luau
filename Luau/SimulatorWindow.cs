@@ -51,6 +51,8 @@ namespace Luau
             _mouse = Mouse.GetState();
 
             GlNanoVG.nvgCreateGL(ref _nvg, (int)NvgCreateFlags.AntiAlias | (int)NvgCreateFlags.StencilStrokes);
+            NanoVG.nvgStrokeWidth(_nvg, 1);
+            NanoVG.nvgStrokeColor(_nvg, NanoVG.nvgRGBA(0, 0, 0, 255));
 
             _simulator = new Simulator();
         }
