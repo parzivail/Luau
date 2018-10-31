@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using Luau.Sim.Feature;
 using NanoVGDotNet;
 using OpenTK;
 using OpenTK.Graphics;
@@ -12,13 +13,13 @@ namespace Luau.Sim
 {
     public class Simulator
     {
-        private readonly List<SimFeature> _bodyAccumulator;
-        private readonly List<SimFeature> _bodies;
+        private readonly List<ISimCommand> _commandBuffer;
+        private readonly List<ISimCommand> _commands;
 
         public Simulator()
         {
-            _bodyAccumulator = new List<SimFeature>();
-            _bodies = new List<SimFeature>();
+            _commandBuffer = new List<ISimCommand>();
+            _commands = new List<ISimCommand>();
         }
 
         public void Render(NVGcontext nvg)
@@ -26,30 +27,28 @@ namespace Luau.Sim
             NanoVG.nvgStrokeWidth(nvg, 2);
             NanoVG.nvgStrokeColor(nvg, NanoVG.nvgRGBA(0, 0, 0, 255));
 
-            lock (_bodies)
+            lock (_commands)
             {
-                foreach (var simBody in _bodies)
-                {
-                    NanoVG.nvgSave(nvg);
-                    simBody.Draw(nvg);
-                    NanoVG.nvgRestore(nvg);
-                }
+                NanoVG.nvgSave(nvg);
+                foreach (var simBody in _commands)
+                    simBody.Execute(nvg);
+                NanoVG.nvgRestore(nvg);
             }
         }
 
         public void Draw()
         {
-            lock (_bodies)
+            lock (_commands)
             {
-                _bodies.Clear();
-                _bodies.AddRange(_bodyAccumulator);
-                _bodyAccumulator.Clear();
+                _commands.Clear();
+                _commands.AddRange(_commandBuffer);
+                _commandBuffer.Clear();
             }
         }
 
-        public void AddFeature(SimFeature feature)
+        public void AddCommand(ISimCommand feature)
         {
-            _bodyAccumulator.Add(feature);
+            _commandBuffer.Add(feature);
         }
     }
 }

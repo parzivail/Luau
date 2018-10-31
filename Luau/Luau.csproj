@@ -104,10 +104,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SimulatorWindow.cs" />
-    <Compile Include="Sim\FeatureCircle.cs" />
-    <Compile Include="Sim\FeatureLine.cs" />
-    <Compile Include="Sim\FeatureRectangle.cs" />
-    <Compile Include="Sim\SimFeature.cs" />
+    <Compile Include="Sim\Feature\CommandFillColor.cs" />
+    <Compile Include="Sim\Feature\CommandSetColor.cs" />
+    <Compile Include="Sim\Feature\CommandStrokeColor.cs" />
+    <Compile Include="Sim\Feature\CommandStrokeWidth.cs" />
+    <Compile Include="Sim\Feature\FeatureArcTo.cs" />
+    <Compile Include="Sim\Feature\FeatureArc.cs" />
+    <Compile Include="Sim\Feature\FeatureCircle.cs" />
+    <Compile Include="Sim\Feature\FeatureEllipse.cs" />
+    <Compile Include="Sim\Feature\FeatureLine.cs" />
+    <Compile Include="Sim\Feature\CommandMoveTo.cs" />
+    <Compile Include="Sim\Feature\FeatureRectangle.cs" />
+    <Compile Include="Sim\Feature\FeatureRoundedRect.cs" />
+    <Compile Include="Sim\Feature\ISimCommand.cs" />
+    <Compile Include="Sim\Feature\SimFeature.cs" />
     <Compile Include="Sim\Simulator.cs" />
     <EmbeddedResource Include="LuauAboutBox.resx">
       <DependentUpon>LuauAboutBox.cs</DependentUpon>
