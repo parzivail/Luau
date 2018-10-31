@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using NanoVGDotNet;
@@ -22,22 +23,28 @@ namespace Luau.Sim
 
         public void Render(NVGcontext nvg)
         {
-            NanoVG.nvgStrokeWidth(nvg, 5);
+            NanoVG.nvgStrokeWidth(nvg, 2);
             NanoVG.nvgStrokeColor(nvg, NanoVG.nvgRGBA(0, 0, 0, 255));
 
-            foreach (var simBody in _bodies)
+            lock (_bodies)
             {
-                NanoVG.nvgSave(nvg);
-                simBody.Draw(nvg);
-                NanoVG.nvgRestore(nvg);
+                foreach (var simBody in _bodies)
+                {
+                    NanoVG.nvgSave(nvg);
+                    simBody.Draw(nvg);
+                    NanoVG.nvgRestore(nvg);
+                }
             }
         }
 
         public void Draw()
         {
-            _bodies.Clear();
-            _bodies.AddRange(_bodyAccumulator);
-            _bodyAccumulator.Clear();
+            lock (_bodies)
+            {
+                _bodies.Clear();
+                _bodies.AddRange(_bodyAccumulator);
+                _bodyAccumulator.Clear();
+            }
         }
 
         public void AddFeature(SimFeature feature)

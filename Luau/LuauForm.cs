@@ -57,6 +57,7 @@ namespace Luau
             if (!TryCloseFile())
                 e.Cancel = true;
 
+            _interpreter.Halt();
             _simForm?.Kill();
 
             // Awful hack to make sure the copied text persists when the window closes
@@ -406,13 +407,18 @@ namespace Luau
         public void ShowSimulator()
         {
             _simForm?.Kill();
-            
+            _simForm?.Dispose();
+            _simForm = null;
+
             var t = new Thread(() => {
                 _simForm = new SimulatorWindow();
                 _simForm.Run(20, 30);
+                Debug.Print("Quit sim thread");
             });
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
+            while (_simForm?.GetSimulator() == null)
+                Application.DoEvents();
         }
 
         public Simulator GetSimulator()

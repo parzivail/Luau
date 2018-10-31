@@ -52,12 +52,17 @@ namespace Luau
                 {
                     _script.DoString(script, codeFriendlyName: "script");
                 }
+
                 ExecutionComplete?.Invoke(this, ExitCondition.ProgramEnd);
             }
             catch (InterpreterException e)
             {
                 LuaError?.Invoke(this, e);
                 ExecutionComplete?.Invoke(this, ExitCondition.ScriptError);
+            }
+            catch (ThreadAbortException)
+            {
+                // Ignore
             }
             catch (Exception e)
             {
@@ -68,6 +73,7 @@ namespace Luau
 
         public void Run(string script)
         {
+            _luaExecThread?.Abort();
             _luaExecThread = new Thread(() => RunScript(script));
             _luaExecThread.Start();
         }
