@@ -93,5 +93,15 @@ namespace Luau.Lua
         {
             Queue(new FeatureRoundedRect { X = x, Y = y, Width = w, Height = h, Radius = r});
         }
+
+        public void push()
+        {
+            Queue(new CommandPush());
+        }
+
+        public void pop()
+        {
+            Queue(new CommandPop());
+        }
     }
 }

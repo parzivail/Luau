@@ -1,6 +1,6 @@
 using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     internal class FeatureCircle : SimFeature
     {
@@ -8,6 +8,9 @@ namespace Luau.Sim
 
         public override void Draw(NVGcontext ctx)
         {
+            if (Radius == 0)
+                return;
+
             NanoVG.nvgBeginPath(ctx);
             NanoVG.nvgCircle(ctx, X, Y, Radius);
             NanoVG.nvgStroke(ctx);

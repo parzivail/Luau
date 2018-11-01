@@ -1,8 +1,6 @@
-﻿using Luau.Sim.Feature;
-using NanoVGDotNet;
-using OpenTK.Graphics.ES10;
+﻿using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     public abstract class SimFeature : ISimCommand
     {

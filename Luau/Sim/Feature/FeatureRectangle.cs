@@ -1,6 +1,6 @@
 using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     internal class FeatureRectangle : SimFeature
     {
@@ -9,6 +9,9 @@ namespace Luau.Sim
 
         public override void Draw(NVGcontext ctx)
         {
+            if (Width == 0 || Height == 0)
+                return;
+
             NanoVG.nvgBeginPath(ctx);
             NanoVG.nvgRect(ctx, X, Y, Width, Height);
             NanoVG.nvgStroke(ctx);

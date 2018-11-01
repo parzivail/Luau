@@ -1,6 +1,6 @@
 using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     internal class FeatureEllipse : SimFeature
     {
@@ -9,6 +9,9 @@ namespace Luau.Sim
 
         public override void Draw(NVGcontext ctx)
         {
+            if (RadiusX == 0 || RadiusY == 0)
+                return;
+
             NanoVG.nvgEllipse(ctx, X, Y, RadiusX, RadiusY);
         }
     }

@@ -105,6 +105,8 @@
     <Compile Include="Settings.cs" />
     <Compile Include="SimulatorWindow.cs" />
     <Compile Include="Sim\Feature\CommandFillColor.cs" />
+    <Compile Include="Sim\Feature\CommandPop.cs" />
+    <Compile Include="Sim\Feature\CommandPush.cs" />
     <Compile Include="Sim\Feature\CommandSetColor.cs" />
     <Compile Include="Sim\Feature\CommandStrokeColor.cs" />
     <Compile Include="Sim\Feature\CommandStrokeWidth.cs" />

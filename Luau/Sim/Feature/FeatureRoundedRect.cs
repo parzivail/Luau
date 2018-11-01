@@ -1,6 +1,6 @@
 using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     internal class FeatureRoundedRect : SimFeature
     {
@@ -10,6 +10,9 @@ namespace Luau.Sim
 
         public override void Draw(NVGcontext ctx)
         {
+            if (Width == 0 || Height == 0)
+                return;
+
             NanoVG.nvgRoundedRect(ctx, X, Y, Width, Height, Radius);
         }
     }

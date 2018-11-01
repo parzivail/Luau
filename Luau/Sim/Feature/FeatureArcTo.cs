@@ -1,6 +1,6 @@
 using NanoVGDotNet;
 
-namespace Luau.Sim
+namespace Luau.Sim.Feature
 {
     internal class FeatureArcTo : SimFeature
     {
@@ -10,6 +10,9 @@ namespace Luau.Sim
 
         public override void Draw(NVGcontext ctx)
         {
+            if ((X == X1 && Y == Y1) || Radius == 0)
+                return;
+
             NanoVG.nvgArcTo(ctx, X, Y, X1, Y1, Radius);
         }
     }
