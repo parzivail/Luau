@@ -331,7 +331,7 @@ namespace Luau
 
         private void tsbOpen_Click(object sender, EventArgs e)
         {
-            if (ofd.ShowDialog(this) != DialogResult.OK)
+            if (TryCloseFile() && ofd.ShowDialog(this) != DialogResult.OK)
                 return;
 
             _savedFileName = ofd.FileName;
